@@ -1,5 +1,6 @@
 /**
  * Created by chenYc on 2017/4/15.
+ * 专门用来写请求的
  */
 
 import FetchUtil from '../../../Base/Network/FetchUtil';
@@ -12,30 +13,6 @@ let Model = {
             ...pa,
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetInfoList, FetchUtil.toQueryString(params), response, error);
-    },
-    getCode(pa, response, error){
-        var	params = {
-            ...pa,
-        };
-        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetCode, FetchUtil.toQueryString(params), response, error);
-    },
-    UserRegister(pa, response, error){
-        var	params = {
-            ...pa,
-        };
-        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.UserRegister, FetchUtil.toQueryString(params), response, error);
-    },
-    updatePsw(pa, response, error){
-        var	params = {
-            ...pa,
-        };
-        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.UpdatePsw, FetchUtil.toQueryString(params), response, error);
-    },
-    findPsw(pa, response, error){
-        var	params = {
-            ...pa,
-        };
-        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.UpdatePsw, FetchUtil.toQueryString(params), response, error);
-    },
+    }
 };
 export default Model;

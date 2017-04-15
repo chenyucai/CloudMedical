@@ -60,7 +60,7 @@ class rootApp extends Component{
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-                        component:initPage,
+                        component:AppMain,
                         name:'WelcomePage'
                     }}
                 />

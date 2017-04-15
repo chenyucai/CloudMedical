@@ -4,6 +4,7 @@
 let ApiInterface = {
   // 登陆
   UserLogin: '/Cloudm/pub/admin/login1.do',
+  // 注册
   UserRegister: '/Cloudm/pub/admin/registerUser.do',
   GetCode: '/Cloudm/pub/admin/information/Infohtml/sendmessage.do',
   UpdatePsw: '/jlJavaPlat/pub/admin/information/Infohtml/resetpassword.do',

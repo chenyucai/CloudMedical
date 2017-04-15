@@ -32,6 +32,9 @@ import Eleven from './Basic/Eleven';
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
 const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
+/**
+ * 请求的model
+ */
 import StudyModel from './StudyModel/StudyModel'
 
 export default class Study extends Component {
@@ -51,6 +54,7 @@ export default class Study extends Component {
 
     this.state = {
       viewpageDataSource: ds,
+      data:[]
     };
   }
 
@@ -59,13 +63,23 @@ export default class Study extends Component {
       classid: 'be68990e-6985-4b7e-9620-6d9c31c9e683',
       page:'1',
       num:'3'
-    }
+    };
     StudyModel.getInfoList(params,(res)=>{
         console.log(res)
-
+        this.setState({data:res.rs})
     },(err)=>{
 
     });
+  }
+
+  renderRow(){
+    var arr = []
+    for (var i = 0; i < this.state.data.length; i++) {
+      arr.push(
+        <Text>1231</Text>
+      )
+    }
+    return arr
   }
 
   _renderPage22( data, pageID ) {
@@ -106,7 +120,7 @@ export default class Study extends Component {
   }
 
   render() {
-    this.getInfoList()
+    this.getInfoList();
     var navTintColor = styleUtil.getNavTintColor();
     var titleTintColor = styleUtil.getTitleTintColor();
     var titleConfig = {
@@ -115,6 +129,7 @@ export default class Study extends Component {
     };
     return (
       <View style={{backgroundColor:'white',flex:1}}>
+        {this.renderRow()}
         <StatusBar
           barStyle={'light-content'}
           animated={true}
