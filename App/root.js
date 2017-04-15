@@ -11,21 +11,13 @@ export const STATUS_BAR_HEIGHT = (Platform.OS === 'ios' ? 20 : 25);
 import {NaviGoBack} from './utils/CommonUtils';
 import WelcomePage from './pages/WelcomePage/WelcomePage';
 
-import FetchUtil from './Base/Network/FetchUtil';
-
-var params = {id:1};
-FetchUtil.fetchPostJson(
-  'http://www.missnefer.com/AppHome/GetHomeInformationList',
-  FetchUtil.toQueryString(params),
-  function(responseText){
-    // console.log(responseText);
-  },
-  function(error){
-    console.log(error);
-  }
-)
+/**
+ * 首页
+ */
+import AppMain from './pages/AppMain';
 
 var _navigator;
+var initPage = AppMain;
 class rootApp extends Component{
     // 构造
       constructor(props) {
@@ -54,10 +46,6 @@ class rootApp extends Component{
         )
     }
 
-    componentWillMount() {
-      fetch('https://www.baidu.com')
-    }
-
     render(){
         return(
             <View style={{flex:1}}>
@@ -72,7 +60,7 @@ class rootApp extends Component{
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-                        component:WelcomePage,
+                        component:initPage,
                         name:'WelcomePage'
                     }}
                 />

@@ -32,26 +32,41 @@ import Eleven from './Basic/Eleven';
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
 const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
+import StudyModel from './StudyModel/StudyModel'
+
 export default class Study extends Component {
   imageArr = [
     'http://163.177.128.179:39241/a818a6784f12ae1c3c6e617c60f0c9cc',
     'http://163.177.128.179:39241/80541d80a3a5766b4117b7553195e5c5',
     'http://163.177.128.179:39241/52b78d58265797bfab8773c12d1767a1'
   ];
-  
+
   constructor( props ) {
     super( props );
     // 用于构建DataSource对象
     var ds = new ViewPager.DataSource( {
       pageHasChanged: ( p1, p2 ) => p1 !== p2,
     } );
-    
-    
+
+
     this.state = {
       viewpageDataSource: ds,
     };
   }
-  
+
+  getInfoList() {
+    var params = {
+      classid: 'be68990e-6985-4b7e-9620-6d9c31c9e683',
+      page:'1',
+      num:'3'
+    }
+    StudyModel.getInfoList(params,(res)=>{
+        console.log(res)
+
+    },(err)=>{
+
+    });
+  }
 
   _renderPage22( data, pageID ) {
     return (
@@ -79,7 +94,7 @@ export default class Study extends Component {
       </TouchableOpacity>
     )
   }
-  
+
   renderPage( data, pageID ) {
     return (
       <Image
@@ -89,8 +104,9 @@ export default class Study extends Component {
         resizeMode={'stretch'}/>
     )
   }
-  
+
   render() {
+    this.getInfoList()
     var navTintColor = styleUtil.getNavTintColor();
     var titleTintColor = styleUtil.getTitleTintColor();
     var titleConfig = {
@@ -106,7 +122,7 @@ export default class Study extends Component {
         <NavigationBar tintColor={navTintColor}
                        title={titleConfig}
         />
-        
+
         <ScrollView>
           <View style={{width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.27}}>
             <ViewPager
@@ -299,5 +315,5 @@ export default class Study extends Component {
       </View>
     )
   }
-  
+
 }
