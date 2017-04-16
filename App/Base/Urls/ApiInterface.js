@@ -31,5 +31,11 @@ let ApiInterface = {
   // 新闻详情
   GetNewsDetail: '/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do',
 
+  // 同一获取接口1
+  FindInfoList: "/Cloudm/pub/admin/information/Infohtml/findInfoList.do",
+
+  //同一获取接口2
+  FindUpdateInfo: "/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do",
+
 };
 export default ApiInterface;

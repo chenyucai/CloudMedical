@@ -23,7 +23,7 @@ import CollectionDetail from './CollectionDetail';
 /**
  * 请求的model
  */
-import MineModel from './MineModel/MineModel'
+// import MineModel from './MineModel/MineModel'
 
 
 export default class MyCollection extends Component {

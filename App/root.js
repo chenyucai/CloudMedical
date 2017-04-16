@@ -18,9 +18,13 @@ import WelcomePage from './pages/WelcomePage/WelcomePage';
  * 首页
  */
 import AppMain from './pages/AppMain';
+/**
+ * 个人中心
+ */
+import MineView from './pages/Mine/MineView';
 
 var _navigator;
-var initPage = AppMain;
+var initPage = MineView;
 class rootApp extends Component{
     // 构造
       constructor(props) {
@@ -63,7 +67,7 @@ class rootApp extends Component{
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-                        component:AppMain,
+                        component:initPage,
                         name:'WelcomePage'
                     }}
                 />
