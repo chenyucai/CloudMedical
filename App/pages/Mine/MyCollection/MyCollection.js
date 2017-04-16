@@ -37,25 +37,6 @@ export default class MyCollection extends Component {
         };
     }
 
-    componentDidMount(){
-      this.getInfoList();
-    }
-
-    getInfoList() {
-      var params = {
-        classid: '205a0525-b63e-49dd-8553-831436562b39',
-        page:'1',
-        num:'1000'
-      };
-      MineModel.getInfoList(params,(res)=>{
-          this.setState({infos: res.infos})
-      },(err)=>{
-
-      });
-    }
-
-    render
-
     render() {
         const navTintColor = styleUtil.getNavTintColor();
         const titleTintColor = styleUtil.getTitleTintColor();
@@ -93,11 +74,11 @@ export default class MyCollection extends Component {
                     tabBarTextStyle={{fontSize: 16}}
                 >
                     <MyCollectionItem tabLabel='全部' {...this.props}/>
-                    <MyCollectionItem tabLabel='心脑血管' {...this.props}/>
-                    <MyCollectionItem tabLabel='内分泌' {...this.props}/>
-                    <MyCollectionItem tabLabel='消化系统' {...this.props}/>
-                    <MyCollectionItem tabLabel='呼吸系统' {...this.props}/>
-                    <MyCollectionItem tabLabel='其他系统' {...this.props}/>
+                    <MyCollectionItem tabLabel='心脑血管' {...this.props} ecentertype={'8da9c1aa-2981-4a8d-a5ba-044ab9d4a9b4'}/>
+                    <MyCollectionItem tabLabel='内分泌' {...this.props} ecentertype={'867f80f1-2813-48cd-b8a5-1cba9fc04b1c'}/>
+                    <MyCollectionItem tabLabel='消化系统' {...this.props} ecentertype={'d92fbbc6-b9a8-4984-9ecf-a9cb8dad24ac'}/>
+                    <MyCollectionItem tabLabel='呼吸系统' {...this.props} ecentertype={'1d927eea-cffe-4fe0-97dd-d14f297278c1'}/>
+                    <MyCollectionItem tabLabel='其他系统' {...this.props} ecentertype={'541b8721-0506-4a39-abb2-4f4bfc9a59f3'}/>
                     <MyCollectionItem tabLabel='医学知识' {...this.props}/>
                 </ScrollableTabView>
             </View>

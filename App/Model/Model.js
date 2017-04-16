@@ -3,9 +3,9 @@
  * 专门用来写请求的
  */
 
-import FetchUtil from './Base/Network/FetchUtil';
-import ApiConst from './Base/Urls/ApiConst';
-import ApiInterface from './Base/Urls/ApiInterface';
+import FetchUtil from '../Base/Network/FetchUtil';
+import ApiConst from '../Base/Urls/ApiConst';
+import ApiInterface from '../Base/Urls/ApiInterface';
 
 let Model = {
     /**
