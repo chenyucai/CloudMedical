@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import styleUtil from  '../../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
+import ImageButton from '../../Component/ImageButton';
+import ApiConst from '../../../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
@@ -37,7 +39,7 @@ export default class KnowledgeDetail extends Component {
       };
       StudyModel.getListDetialColumn(params,(res)=>{
           // console.log(res)
-          this.setState({ListDetialdata:res.infos})
+          this.setState({ListDetialdata:res.infos[0]})
       },(err)=>{
 
       });
@@ -50,6 +52,19 @@ export default class KnowledgeDetail extends Component {
     renderDetail(){
       var rs = this.state.ListDetialdata;
       console.log(rs);
+      var img = [];
+      if (rs.icon) {
+        var imgicon = rs.kpicture.split(",");
+      }else{
+        var imgicon = [];
+      }
+      for (var i = 0; i < imgicon.length; i++) {
+        img.push(
+          <ImageButton style={{width: 20,height: 20}} key={i}
+              source={ApiConst.Versions().ImageBaseUrl+imgicon[i]}
+            />
+        )
+      }
       return(
         <View>
           <View style={{alignItems:'center',justifyContent:'center'}}>
@@ -63,24 +78,24 @@ export default class KnowledgeDetail extends Component {
           </Text>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
               常见病因:
-              <Text style={{fontSize:14,color:'#888888'}}>遗传、环境、年龄、肥胖等</Text>
+              <Text style={{fontSize:14,color:'#888888'}}>{rs.pathogenesis}</Text>
           </Text>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
               就诊科室:
-              <Text style={{fontSize:14,color:'#888888'}}>内科、心血管内科</Text>
+              <Text style={{fontSize:14,color:'#888888'}}>{rs.department}</Text>
           </Text>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
               传染性:
-              <Text style={{fontSize:14,color:'#888888'}}>无</Text>
+              <Text style={{fontSize:14,color:'#888888'}}>{rs.infectivity}</Text>
           </Text>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
-              图片:
-              <Text style={{fontSize:14,color:'#888888'}}>无</Text>
+              <Text>图片:</Text>
+              <Text style={{fontSize:14,color:'#888888'}}>{img}</Text>
           </Text>
           <View style={{padding: 10}}>
               <Text>
                   <Text style={{fontSize:14,color:'#333333'}}>介绍:</Text>
-
+                  {rs.kcontent}
               </Text>
           </View>
         </View>
