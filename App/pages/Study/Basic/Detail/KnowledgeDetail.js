@@ -23,13 +23,14 @@ export default class KnowledgeDetail extends Component {
         super(props);
         // 初始状态
         this.state = {
-          ListDetialdata: {}
+          ListDetialdata: []
         };
     }
 
     getListDetialColumn() {
       var id = this.props.id;
       var classid = this.props.classid
+      console.log(classid);
       var params = {
         id: id,
         classid: classid,
@@ -48,6 +49,7 @@ export default class KnowledgeDetail extends Component {
 
     renderDetail(){
       var rs = this.state.ListDetialdata;
+      console.log(rs);
       return(
         <View>
           <View style={{alignItems:'center',justifyContent:'center'}}>
@@ -57,7 +59,7 @@ export default class KnowledgeDetail extends Component {
           </View>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
               英文名称:
-              <Text style={{fontSize:14,color:'#888888'}}>hypertension</Text>
+              <Text style={{fontSize:14,color:'#888888'}}>{rs.engname}</Text>
           </Text>
           <Text style={{fontSize:14,color:'#333333',marginLeft:10,marginTop:10}}>
               常见病因:
@@ -78,7 +80,7 @@ export default class KnowledgeDetail extends Component {
           <View style={{padding: 10}}>
               <Text>
                   <Text style={{fontSize:14,color:'#333333'}}>介绍:</Text>
-                  {rs.content}
+
               </Text>
           </View>
         </View>
@@ -89,7 +91,8 @@ export default class KnowledgeDetail extends Component {
         var navTintColor = styleUtil.getNavTintColor();
         var titleTintColor = styleUtil.getTitleTintColor();
         var titleConfig = {
-            title: '知识详情',
+            // title: '知识详情',
+            title: this.props.title,
             tintColor: titleTintColor
         };
         var leftbutton=(

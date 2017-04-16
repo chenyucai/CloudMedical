@@ -183,12 +183,13 @@ export default class Study extends Component {
     )
   }
 
-  go(classid){
+  go(classid,title){
     this.props.navigator.push({
       name: 'One',
       component: One,
       params:{
-        classid: classid
+        classid: classid,
+        title: title
       }
     })
   }
@@ -206,10 +207,9 @@ export default class Study extends Component {
             Txt={data[i].bname}
             classid={classid}
             navigator={this.props.navigator}
-            onPress={this.go.bind(this,classid)}
+            onPress={this.go.bind(this,classid,data[i].bname)}
           />
         </View>
-
       )
     }
     return items;

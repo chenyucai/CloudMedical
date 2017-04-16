@@ -14,6 +14,7 @@ import styleUtil from  '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import ImageButton from '../Component/ImageButton';
 import KnowledgeDetail from './Detail/KnowledgeDetail';
+import ApiConst from '../../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
@@ -27,56 +28,83 @@ export default class One extends Component {
         };
     }
 
-    // getInfoList() {
-    //   var classid = this.props.classid
-    //   console.log(classid);
-    //   var params = {
-    //     classid: classid,
-    //     page:'1',
-    //     num:'3'
-    //   };
-    //   StudyModel.getInfoList(params,(res)=>{
-    //       // console.log(res)
-    //       this.setState({Listdata:res.infos})
-    //   },(err)=>{
-    //
-    //   });
-    // }
-
-    getSearchColumn() {
-      var classid = this.props.classid;
+    getInfoList() {
+      var classid = this.props.classid
+      console.log(classid);
       var params = {
         classid: classid,
         page:'1',
-        num:'1000'
+        num:'3'
       };
-      StudyModel.getSearchColumn(params,(res)=>{
+      StudyModel.getInfoList(params,(res)=>{
           // console.log(res)
-          this.setState({SearchColumndata:res.infos})
+          this.setState({Listdata:res.infos})
       },(err)=>{
 
       });
     }
 
+    // getSearchColumn() {
+    //   var classid = this.props.classid;
+    //   var params = {
+    //     classid: classid,
+    //     page:'1',
+    //     num:'1000'
+    //   };
+    //   StudyModel.getSearchColumn(params,(res)=>{
+    //       // console.log(res)
+    //       this.setState({SearchColumndata:res.infos})
+    //   },(err)=>{
+    //
+    //   });
+    // }
+
     componentDidMount(){
-      this.getSearchColumn();
-      // this.getInfoList();
+      // this.getSearchColumn();
+      this.getInfoList();
+    }
+
+    goKnowledgeDetail(id,classid,title){
+      this.props.navigator.push({
+        name: 'KnowledgeDetail',
+        component: KnowledgeDetail,
+        params:{
+          id: id,
+          classid: classid,
+          title: title
+        }
+      })
     }
 
     renderItem() {
       var items = [];
-      var data = this.state.SearchColumndata;
+      var data = this.state.Listdata;
       console.log(data);
       for (var i = 0; i < data.length; i++) {
-        <ImageButton
-            source={'http://163.177.128.179:39241/59430fe34f2f88cfebe6119d1d38f66c'}
-            Txt={data[i].bname}
-            onPress={() => {
-            this.props.navigator.push({
-                id: this.state.SearchColumndata[i].id,
-                classid: this.state.SearchColumndata[i].classid
-            })
-          }}/>
+        var img = [];
+        if (data[i].icon) {
+          var imgicon = data[i].icon.split(",");
+        }else{
+          var imgicon = [];
+        }
+        for (var i = 0; i < imgicon.length; i++) {
+          img.push(imgicon[i])
+        }
+      }
+      for (var i = 0; i < data.length; i++) {
+        var id = data[i].id;
+        var classid = data[i].classid;
+        items.push(
+          <View key={i}>
+            <ImageButton
+                source={ApiConst.Versions().ImageBaseUrl+img[0]}
+                Txt={data[i].kcontent}
+                classid={classid}
+                navigator={this.props.navigator}
+                onPress={this.goKnowledgeDetail.bind(this,data[i].id,classid,data[i].title)}
+              />
+          </View>
+        )
       }
       return items;
     }
@@ -85,7 +113,8 @@ export default class One extends Component {
         var navTintColor = styleUtil.getNavTintColor();
         var titleTintColor = styleUtil.getTitleTintColor();
         var titleConfig = {
-            title: '医疗基础',
+            // title: '医疗基础',
+            title: this.props.title,
             tintColor: titleTintColor
         };
         var leftbutton=(
