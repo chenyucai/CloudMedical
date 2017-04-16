@@ -44,12 +44,11 @@ export default class One extends Component {
     // }
 
     getSearchColumn() {
-      var bclassid = this.props.classid
-      console.log(bclassid);
+      var classid = this.props.classid;
       var params = {
-        bclassid: bclassid,
-        // nowPage:'1',
-        // pageSize:'1000'
+        classid: classid,
+        page:'1',
+        num:'1000'
       };
       StudyModel.getSearchColumn(params,(res)=>{
           // console.log(res)

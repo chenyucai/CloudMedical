@@ -20,6 +20,10 @@ import MyCollectionItem from './Component/MyCollectionItem';
 import ScrollableTabView, {DefaultTabBar,ScrollableTabBar} from 'react-native-scrollable-tab-view'
 
 import CollectionDetail from './CollectionDetail';
+/**
+ * 请求的model
+ */
+import MineModel from './MineModel/MineModel'
 
 
 export default class MyCollection extends Component {
@@ -32,7 +36,24 @@ export default class MyCollection extends Component {
             dataSource: ds.cloneWithRows(['1', '2', '3', '4', '5', '1', '2', '3', '4', '5', '1', '2', '3', '4', '5'])
         };
     }
-    
+
+    componentDidMount(){
+      this.getInfoList();
+    }
+
+    getInfoList() {
+      var params = {
+        classid: '205a0525-b63e-49dd-8553-831436562b39',
+        page:'1',
+        num:'3'
+      };
+      MineModel.getInfoList(params,(res)=>{
+          this.setState({infos: res.infos})
+      },(err)=>{
+
+      });
+    }
+
     render() {
         const navTintColor = styleUtil.getNavTintColor();
         const titleTintColor = styleUtil.getTitleTintColor();
@@ -100,12 +121,3 @@ const styles = StyleSheet.create({
 
     },
 })
-
-
-
-
-
-
-
-
-

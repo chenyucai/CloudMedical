@@ -78,7 +78,7 @@ export default class KnowledgeDetail extends Component {
           <View style={{padding: 10}}>
               <Text>
                   <Text style={{fontSize:14,color:'#333333'}}>介绍:</Text>
-                  {/* {{this.state.ListDetialdata.content}} */}
+                  {rs.content}
               </Text>
           </View>
         </View>

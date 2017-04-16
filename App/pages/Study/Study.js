@@ -201,7 +201,7 @@ export default class Study extends Component {
       items.push(
         <View key={i}>
           <ImageButton
-            source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
+            source={ApiConst.Versions().ImageBaseUrl+data[i].classimg}
             // source={''ApiConst.Versions().ImageBaseUrl' + 'ApiInterface.GetInfoList' + 'data[i].classimg''}
             Txt={data[i].bname}
             classid={classid}
