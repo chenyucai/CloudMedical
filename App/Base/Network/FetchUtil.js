@@ -186,9 +186,11 @@ let FetchUtil = {
 					BaseError.errorByNetwork();
 				}
 			}
-            console.log("----fecth response---" + JSON.stringify(response));
+            // console.log("----fecth response---" + JSON.stringify(response));
 		}).then((responseJson) => {
-            console.log("----fecth response---" + JSON.stringify(responseJson));
+            // console.log("----fecth response---" + JSON.stringify(responseJson));
+            console.log("----fecth response---");
+						console.log(responseJson);
 			if (responseJson != null){
 				callback(responseJson);
 			}else{

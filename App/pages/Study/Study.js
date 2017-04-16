@@ -32,7 +32,7 @@ import Eleven from './Basic/Eleven';
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
 const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
-// import ApiConst from '../../../Base/Urls/ApiConst';
+import ApiConst from '../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
@@ -44,7 +44,6 @@ export default class Study extends Component {
     'http://163.177.128.179:39241/80541d80a3a5766b4117b7553195e5c5',
     'http://163.177.128.179:39241/52b78d58265797bfab8773c12d1767a1'
   ];
-
   constructor( props ) {
     super( props );
     // 用于构建DataSource对象
@@ -56,12 +55,14 @@ export default class Study extends Component {
     this.state = {
       viewpageDataSource: ds,
       infos:[],
-      SearchColumndata:[]
+      SearchColumndata:[],
+      medicineMenu:[]
     };
   }
 
   componentDidMount(){
     this.getSearchColumn();
+    this.getMedicineMenu();
     this.getInfoList();
   }
 
@@ -82,7 +83,7 @@ export default class Study extends Component {
     var data = [];
     for (var i = 0; i < this.state.infos.length; i++) {
       var item = this.state.infos[i];
-      var date = new Date(1398250549490);
+      var date = new Date(item.newstime);
       Y = date.getFullYear() + '-';
       M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
       D = date.getDate() + ' ';
@@ -98,7 +99,7 @@ export default class Study extends Component {
                     })
                 }}>
           <Image style={{width:50,height:50}}
-                 source={{uri:item.adpicture}}/>
+                 source={{uri:ApiConst.Versions().ImageBaseUrl+item.adpicture}}/>
           <View style={{flex:1,marginLeft:10}}>
             <View style={{}}>
               <Text style={{fontSize:14,color:'#333333',textAlign:'left'}} numberOfLines={1}>{item.title}</Text>
@@ -126,6 +127,20 @@ export default class Study extends Component {
     StudyModel.getSearchColumn(params,(res)=>{
         // console.log(res)
         this.setState({SearchColumndata:res.infos})
+    },(err)=>{
+
+    });
+  }
+
+  getMedicineMenu() {
+    var params = {
+      bclassid: '097a2dce-5fcd-4801-8d01-05a09972212c',
+      nowPage:'1',
+      pageSize:'1000'
+    };
+    StudyModel.getMedicineMenu(params,(res)=>{
+        // console.log(res)
+        this.setState({medicineMenu:res.infos})
     },(err)=>{
 
     });
@@ -194,6 +209,35 @@ export default class Study extends Component {
             onPress={this.go.bind(this,classid)}
           />
         </View>
+
+      )
+    }
+    return items;
+  }
+
+  goZixun(classid,title){
+    this.props.navigator.push({
+      name: 'ZiXun',
+      component: ZiXun,
+      params:{
+        classid: classid,
+        title:title
+      }
+    })
+  }
+
+  renderMedicineMenu(){
+    var items = [];
+    var data = this.state.medicineMenu;
+    for (var i = 0; i < data.length; i++) {
+      var item = data[i];
+      items.push(
+        // <View key={i}>
+          <ImageButton key={i}
+            source={ApiConst.Versions().ImageBaseUrl+item.classimg}
+            Txt={data[i].bname}
+            onPress={this.goZixun.bind(this,item.classid,data[i].bname)}/>
+        // </View>
 
       )
     }
@@ -363,7 +407,8 @@ export default class Study extends Component {
           <Text style={{fontSize:14,color:'black',paddingVertical:10,marginLeft:10}}>药圈</Text>
           <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-            <ImageButton
+            {this.renderMedicineMenu()}
+            {/* <ImageButton
               source={'http://163.177.128.179:39241/4b8a2a3b1ec44cc0705d445666042688'}
               Txt="资讯"
               onPress={() => {
@@ -394,7 +439,7 @@ export default class Study extends Component {
                                         this.props.navigator.push({
                                             component:ZiXun
                                          })
-                                }}/>
+                                }}/> */}
           </View>
           <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
           {/* 垂直轮播  */}

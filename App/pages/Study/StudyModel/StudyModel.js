@@ -26,5 +26,32 @@ let Model = {
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetListDetial, FetchUtil.toQueryString(params), response, error);
     },
+    /**
+     * 获取药圈模块
+     */
+    getMedicineMenu(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetMedicineMenu, FetchUtil.toQueryString(params), response, error);
+    },
+    /**
+     * 获取新闻列表
+     */
+    getNewsList(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetNewsList, FetchUtil.toQueryString(params), response, error);
+    },
+    /**
+     * 获取新闻详情
+     */
+    getNewsDetail(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetNewsDetail, FetchUtil.toQueryString(params), response, error);
+    },
 };
 export default Model;

@@ -22,5 +22,14 @@ let ApiInterface = {
   //获取个人中心
   GetPersonCenter: "/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do",
 
+  //获取药圈菜单
+  GetMedicineMenu: "/Cloudm/pub/admin/column/manageColumn/searchColumn.do",
+
+  // 获取新闻资讯列表
+  GetNewsList: "/Cloudm/pub/admin/information/Infohtml/findInfoList.do",
+
+  // 新闻详情
+  GetNewsDetail: '/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do',
+
 };
 export default ApiInterface;

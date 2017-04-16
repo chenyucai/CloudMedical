@@ -12,6 +12,10 @@ import {
 } from 'react-native';
 import styleUtil from  '../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
+
+import StudyModel from './StudyModel/StudyModel';
+import ApiConst from '../../Base/Urls/ApiConst';
+
 let GOBAL_WIDTH=Dimensions.get('window').width;
 export default class AnnounceDetail extends Component {
     // 构造
@@ -20,6 +24,26 @@ export default class AnnounceDetail extends Component {
         // 初始状态
         this.state = {};
     }
+
+    componentDidMount(){
+      this.getDetail();
+    }
+
+    getDetail(){
+      var params = {
+        classid: this.props.classid,
+        id:this.props.id
+      };
+      StudyModel.getNewsDetail(params,(res)=>{
+        var rs = res.infos[0];
+        this.setState({
+          ...rs
+        })
+      },(err)=>{
+
+      });
+    }
+
 
     render() {
         var navTintColor = styleUtil.getNavTintColor();
@@ -49,15 +73,15 @@ export default class AnnounceDetail extends Component {
                 <ScrollView>
                     <View style={{width: GOBAL_WIDTH, height: 50, justifyContent: 'space-around'}}>
                         <View style={{width: GOBAL_WIDTH, alignItems: 'center'}}>
-                            <Text>2015年中国造纸行业市场发展状态分析</Text>
+                            <Text>{this.state.title}</Text>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', width: GOBAL_WIDTH,}}>
-                            <Text>薛志刚    2015-11-12 18:09</Text>
+                            <Text>{this.state.newsbrief}</Text>
                         </View>
                     </View>
                     <View style={{width:GOBAL_WIDTH,height:1,backgroundColor:'#efefef',marginTop:10}}/>
                     <Image
-                        source={{uri: 'http://163.177.128.179:39241/0d566440a24fcf2092d8a673c715754e'}}
+                        source={{uri: ApiConst.Versions().ImageBaseUrl + this.state.npicture}}
                         style={{
                                 width: GOBAL_WIDTH -40,
                                 height: (GOBAL_WIDTH -40)/2,
@@ -67,84 +91,7 @@ export default class AnnounceDetail extends Component {
                     />
                     <View style={{padding: 10}}>
                         <Text>
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
-                            2015年中国造纸行业市场发展状态分析
+                            {this.state.ncontent}
                         </Text>
                     </View>
                 </ScrollView>

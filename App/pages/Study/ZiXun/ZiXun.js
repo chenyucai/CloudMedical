@@ -13,6 +13,9 @@ import {
 import styleUtil from  '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import AnnounceDetail from '../AnnounceDetail';
+import StudyModel from '../StudyModel/StudyModel';
+import FormatUtil from '../../../utils/FormatUtil'
+
 export default class ZiXun extends Component {
     constructor(props) {
         super(props);
@@ -24,17 +27,33 @@ export default class ZiXun extends Component {
     }
 
     componentDidMount() {
-        let Info = [];
-        for (var i = 0; i < 10; i++) {
-            Info.push({
-                title: '习近平主持政治局会议六中全会召开',
-                name: '习近平主席',
-                date: '2017-03-15'
-            })
-        }
-        this.setState({
-            dataSource1: this.state.dataSource1.cloneWithRows(Info)
-        })
+        // let Info = [];
+        // for (var i = 0; i < 10; i++) {
+        //     Info.push({
+        //         title: '习近平主持政治局会议六中全会召开',
+        //         name: '习近平主席',
+        //         date: '2017-03-15'
+        //     })
+        // }
+        // this.setState({
+        //     dataSource1: this.state.dataSource1.cloneWithRows(Info)
+        // })
+
+      this.getNewsList();
+    }
+
+    getNewsList(){
+      var params = {
+        classid: this.props.classid,
+        page:'1',
+        num:'1000'
+      };
+      StudyModel.getNewsList(params,(res)=>{
+          // console.log(res)
+          this.setState({dataSource1:this.state.dataSource1.cloneWithRows(res.infos)})
+      },(err)=>{
+
+      });
     }
 
     renderRow(rowData) {
@@ -43,12 +62,18 @@ export default class ZiXun extends Component {
                 style={{padding:10,justifyContent:'center',borderBottomColor:'#efefef',borderBottomWidth:1/PixelRatio.get()}}
                             onPress={()=>{
                                 this.props.navigator.push({
-                                     component:AnnounceDetail
+                                  name: 'AnnounceDetail',
+                                  component:AnnounceDetail,
+                                  params:{
+                                    classid:rowData.classid,
+                                    id:rowData.id
+                                  }
+
                                 })
                               }}>
                 <Text style={{fontSize:16,color:'#333333'}}>{rowData.title}</Text>
                 <View style={{flexDirection:'row',alignItems:'center',marginTop:10}}>
-                    <Text style={{fontSize:14,color:'#888888'}}>{rowData.name} {rowData.date}</Text>
+                    <Text style={{fontSize:14,color:'#888888'}}>{rowData.username} {FormatUtil.format(rowData.newstime)}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -58,7 +83,8 @@ export default class ZiXun extends Component {
         var navTintColor = styleUtil.getNavTintColor();
         var titleTintColor = styleUtil.getTitleTintColor();
         var titleConfig = {
-            title: '资讯',
+            // title: '资讯',
+            title: this.props.title,
             tintColor: titleTintColor
         };
         var leftbutton=(
