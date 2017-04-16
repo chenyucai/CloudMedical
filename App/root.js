@@ -9,8 +9,11 @@ import {
     } from  'react-native';
 export const STATUS_BAR_HEIGHT = (Platform.OS === 'ios' ? 20 : 25);
 import {NaviGoBack} from './utils/CommonUtils';
-import WelcomePage from './pages/WelcomePage/WelcomePage';
 
+/**
+ * 欢迎页面
+ */
+import WelcomePage from './pages/WelcomePage/WelcomePage';
 /**
  * 首页
  */

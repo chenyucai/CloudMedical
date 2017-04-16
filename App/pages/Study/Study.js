@@ -55,8 +55,14 @@ export default class Study extends Component {
 
     this.state = {
       viewpageDataSource: ds,
+      infos:[],
       SearchColumndata:[]
     };
+  }
+
+  componentDidMount(){
+    this.getSearchColumn();
+    this.getInfoList();
   }
 
   getInfoList() {
@@ -66,11 +72,49 @@ export default class Study extends Component {
       num:'3'
     };
     StudyModel.getInfoList(params,(res)=>{
-        // console.log(res)
-        // this.setState({data:res.rs})
+        this.setState({infos: res.infos})
     },(err)=>{
 
     });
+  }
+
+  renderInfoList(){
+    var data = [];
+    for (var i = 0; i < this.state.infos.length; i++) {
+      var item = this.state.infos[i];
+      var date = new Date(1398250549490);
+      Y = date.getFullYear() + '-';
+      M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+      D = date.getDate() + ' ';
+      h = date.getHours() + ':';
+      m = date.getMinutes() + ':';
+      s = date.getSeconds();
+      data.push(
+        <TouchableOpacity key={i}
+          style={{flexDirection:'row',flex:1,backgroundColor:'#fff',padding:15,borderBottomWidth:1/PixelRatio.get(),borderBottomColor:'#efefef',alignItems:'center'}}
+          onPress={()=>{
+                    this.props.navigator.push({
+                        component:AnnounceDetail
+                    })
+                }}>
+          <Image style={{width:50,height:50}}
+                 source={{uri:item.adpicture}}/>
+          <View style={{flex:1,marginLeft:10}}>
+            <View style={{}}>
+              <Text style={{fontSize:14,color:'#333333',textAlign:'left'}} numberOfLines={1}>{item.title}</Text>
+              <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
+                <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
+                  <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5,flex:1}}
+                        numberOfLines={1}>{item.adcontent}</Text>
+                </View>
+                <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5}}>{Y+M+D}</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    }
+    return data;
   }
 
   getSearchColumn() {
@@ -86,20 +130,6 @@ export default class Study extends Component {
 
     });
   }
-
-  componentDidMount(){
-    this.getSearchColumn();
-  }
-
-  // renderRow(){
-  //   var arr = []
-  //   for (var i = 0; i < this.state.data.length; i++) {
-  //     arr.push(
-  //       <Text>1231</Text>
-  //     )
-  //   }
-  //   return arr
-  // }
 
   _renderPage22( data, pageID ) {
     return (
@@ -367,12 +397,14 @@ export default class Study extends Component {
           <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
           {/* 垂直轮播  */}
           <View  overflow={ 'hidden'}>
-              <CustomBulletinBoard
+              {/* <CustomBulletinBoard
                   {...this.props}
-
+                  {...this.state.infoObj}
                   style={{height:210}}
 
-              />
+              /> */}
+              {this.renderInfoList()}
+
           </View>
         </ScrollView>
       </View>
