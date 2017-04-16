@@ -19,18 +19,18 @@ import PracticeType from './PracticeType';
 
 let TestData = [
   {
-    'id': 'RespiratorySystem',
+    'id': '1d927eea-cffe-4fe0-97dd-d14f297278c1',
     'name': '呼吸系统',
     'imgUrl': 'http://163.177.128.179:39241/cd071a1842aecc3f8200367730cb26b5'
   },
-  { 'id': 'Endocrine', 'name': '内分泌', 'imgUrl': 'http://163.177.128.179:39241/fa4547e7063aefe3dc2c6a47113a595b' },
-  { 'id': 'HeartHead', 'name': '心脑血管', 'imgUrl': 'http://163.177.128.179:39241/8ff9d5fbbac6d4c67da3239440a8c233' },
+  { 'id': '867f80f1-2813-48cd-b8a5-1cba9fc04b1c', 'name': '内分泌', 'imgUrl': 'http://163.177.128.179:39241/fa4547e7063aefe3dc2c6a47113a595b' },
+  { 'id': '8da9c1aa-2981-4a8d-a5ba-044ab9d4a9b4', 'name': '心脑血管', 'imgUrl': 'http://163.177.128.179:39241/8ff9d5fbbac6d4c67da3239440a8c233' },
   {
-    'id': 'DigestiveSystem',
+    'id':'d92fbbc6-b9a8- 4984-9ecf- a9cb8dad24ac',
     'name': '消化系统',
     'imgUrl': 'http://163.177.128.179:39241/4ef23feb0049068a528d56e4b2e59e49'
   },
-  { 'id': 'OtherSystems', 'name': '其他系统', 'imgUrl': 'http://163.177.128.179:39241/43d28bfb7d8c1013e57982a1e9da95c8' },
+  { 'id': '541b8721-0506-4a39-abb2-4f4bfc9a59f3', 'name': '其他系统', 'imgUrl': 'http://163.177.128.179:39241/43d28bfb7d8c1013e57982a1e9da95c8' },
 ];
 export default class Practice extends Component {
   // 构造
@@ -42,8 +42,8 @@ export default class Practice extends Component {
       dataSource: ds.cloneWithRows( TestData )
     };
   }
-  
-  goToTest = ( value ) => {
+
+  goToTest = ( value , id) => {
     const { navigator } = this.props;
     InteractionManager.runAfterInteractions( () => {
       if ( navigator ) {
@@ -52,21 +52,22 @@ export default class Practice extends Component {
           name: value,
           params: {
             name: value,
+            id:id
           }
         } )
       }
     } )
   };
-  
+
   renderRow( rowData, sectionID, rowID ) {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => this.goToTest( rowData.name )}>
+      <TouchableOpacity activeOpacity={1} onPress={() => this.goToTest( rowData.name, rowData.id )}>
         <MineItem name={rowData.name} imgUrl={rowData.imgUrl} line={false}/>
       </TouchableOpacity>
     )
   };
-  
-  
+
+
   render() {
     const navTintColor = styleUtil.getNavTintColor();
     const titleTintColor = styleUtil.getTitleTintColor();
@@ -94,7 +95,7 @@ export default class Practice extends Component {
           title={titleConfig}
           leftButton={leftbutton}
         />
-        
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={( rowData, sectionID, rowID ) => this.renderRow( rowData, sectionID, rowID )}

@@ -25,8 +25,8 @@ import DifficultConsolidate from '../DifficultConsolidate/DifficultConsolidate';
 import MyCollection from '../MyCollection/MyCollection';
 
 let TestData = [
-  { 'id': 'SequencePractice', 'name': '顺序练习','imgUrl':'http://163.177.128.179:39241/2e877c97c8949919baccd667b57fa770'},
-  { 'id': 'SequencePractice', 'name': '随机练习','imgUrl':'http://163.177.128.179:39241/7844a1cefa9daa4f80133c8fb0618bb4' },
+  { 'id': 'SequencePractice', type:'order', 'name': '顺序练习','imgUrl':'http://163.177.128.179:39241/2e877c97c8949919baccd667b57fa770'},
+  { 'id': 'SequencePractice', type:'sj', 'name': '随机练习','imgUrl':'http://163.177.128.179:39241/7844a1cefa9daa4f80133c8fb0618bb4' },
   { 'id': 'SimulationTest', 'name': '模拟考试' ,'imgUrl':'http://163.177.128.179:39241/20972e65a040972b16cea01dd38e1263'},
   { 'id': 'DifficultConsolidate', 'name': '难点巩固' ,'imgUrl':'http://163.177.128.179:39241/4f7567a474e1b0af6ce5fa2bbfdeffa9'},
   { 'id': 'MyCollection', 'name': '我的收藏' ,'imgUrl':'http://163.177.128.179:39241/769ddc7608010b93297472688be13855'},
@@ -41,7 +41,7 @@ export default class PracticeType extends Component {
       dataSource: ds.cloneWithRows( TestData )
     };
   }
-  
+
   goToTest = ( value ) => {
     const { navigator } = this.props;
     InteractionManager.runAfterInteractions( () => {
@@ -51,34 +51,42 @@ export default class PracticeType extends Component {
             navigator.push( {
               component: SequencePractice,
               params: {
-                name: value.name
+                name: value.name,
+                id:this.props.id,
+                type:value.type
               }
             } )
             break;
           case 'SimulationTest':
             navigator.push( {
               component: SimulationTest,
+              id:this.props.id,
+              classid:this.props.classid
             } )
             break;
           case 'DifficultConsolidate':
             navigator.push( {
               component: DifficultConsolidate,
-              name: 'DifficultConsolidate'
+              name: 'DifficultConsolidate',
+              id:this.props.id,
+              classid:this.props.classid
             } )
             break;
           case 'MyCollection':
             navigator.push( {
               component: MyCollection,
-              name: 'MyCollection'
+              name: 'MyCollection',
+              id:this.props.id,
+              classid:this.props.classid
             } )
             break;
-          
+
         }
-        
+
       }
     } )
   };
-  
+
   renderRow( rowData, sectionID, rowID ) {
     return (
       <TouchableOpacity activeOpacity={1} onPress={() => this.goToTest( rowData )}>
@@ -86,7 +94,7 @@ export default class PracticeType extends Component {
       </TouchableOpacity>
     )
   };
-  
+
   render() {
     const navTintColor = styleUtil.getNavTintColor();
     const titleTintColor = styleUtil.getTitleTintColor();
@@ -114,7 +122,7 @@ export default class PracticeType extends Component {
           title={titleConfig}
           leftButton={leftbutton}
         />
-        
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={( rowData, sectionID, rowID ) => this.renderRow( rowData, sectionID, rowID )}

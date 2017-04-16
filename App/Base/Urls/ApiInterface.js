@@ -37,5 +37,8 @@ let ApiInterface = {
   //同一获取接口2
   FindUpdateInfo: "/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do",
 
+  // 获取随机练习
+  getRandomTest:'/Cloudm/pub/admin/getRandomTest.do',
+
 };
 export default ApiInterface;
