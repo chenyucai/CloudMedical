@@ -60,24 +60,31 @@ export default class PracticeType extends Component {
           case 'SimulationTest':
             navigator.push( {
               component: SimulationTest,
-              id:this.props.id,
-              classid:this.props.classid
+              params:{
+                id:this.props.id,
+                classid:this.props.classid
+              }
+
             } )
             break;
           case 'DifficultConsolidate':
             navigator.push( {
               component: DifficultConsolidate,
               name: 'DifficultConsolidate',
-              id:this.props.id,
-              classid:this.props.classid
+              params:{
+                id:this.props.id,
+                classid:this.props.classid
+              }
             } )
             break;
           case 'MyCollection':
             navigator.push( {
               component: MyCollection,
               name: 'MyCollection',
-              id:this.props.id,
-              classid:this.props.classid
+              params:{
+                id:this.props.id,
+                classid:this.props.classid
+              }
             } )
             break;
 

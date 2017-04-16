@@ -24,7 +24,7 @@ import AppMain from './pages/AppMain';
 import MineView from './pages/Mine/MineView';
 
 var _navigator;
-var initPage = MineView;
+var initPage = AppMain;
 class rootApp extends Component{
     // 构造
       constructor(props) {

@@ -40,5 +40,8 @@ let ApiInterface = {
   // 获取随机练习
   getRandomTest:'/Cloudm/pub/admin/getRandomTest.do',
 
+  // 模拟考试
+  startExam: '/Cloudm/pub/admin/startExam.do'
+
 };
 export default ApiInterface;
