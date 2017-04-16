@@ -19,5 +19,11 @@ let Model = {
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetPersonCenter, FetchUtil.toQueryString(params), response, error);
     },
+    getInfoList(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetInfoList, FetchUtil.toQueryString(params), response, error);
+    },
 };
 export default Model;

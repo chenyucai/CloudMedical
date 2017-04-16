@@ -122,6 +122,7 @@ export default class MineView extends Component{
                                                 })
                                           }else{
                                                this.props.navigator.push({
+                                                    name: 'TestWinIntegral',
                                                     component:TestWinIntegral
                                                 })
                                           }

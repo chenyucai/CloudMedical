@@ -32,7 +32,7 @@ import Eleven from './Basic/Eleven';
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
 const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
-// import ApiConst from '../../../Base/Urls/ApiConst';
+import ApiConst from '../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
@@ -186,7 +186,7 @@ export default class Study extends Component {
       items.push(
         <View key={i}>
           <ImageButton
-            source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
+            source={ApiConst.Versions().ImageBaseUrl+data[i].classimg}
             // source={''ApiConst.Versions().ImageBaseUrl' + 'ApiInterface.GetInfoList' + 'data[i].classimg''}
             Txt={data[i].bname}
             classid={classid}
