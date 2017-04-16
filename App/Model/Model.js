@@ -26,5 +26,15 @@ let Model = {
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.FindUpdateInfo, FetchUtil.toQueryString(params), response, error);
     },
+
+    /**
+     * 获取随机练习
+     */
+    getRandomTest(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.getRandomTest, FetchUtil.toQueryString(params), response, error);
+    },
 };
 export default Model;

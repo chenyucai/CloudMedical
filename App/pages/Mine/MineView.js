@@ -133,7 +133,8 @@ export default class MineView extends Component{
                         Txt="练习"
                         onPress={() => {
                                         this.props.navigator.push({
-                                            component:Practice
+                                            component:Practice,
+                                            name:'Practice'
                                         })
                                 }}/>
                     <ImageButton

@@ -19,6 +19,8 @@ import styleUtil from  '../../../utils/styleutil';
 
 import DifficultConsolidate from '../DifficultConsolidate/DifficultConsolidate';
 
+import Model from '../../../Model/Model'
+
 
 export default class SequencePractice extends Component {
     // 构造
@@ -29,7 +31,40 @@ export default class SequencePractice extends Component {
             isCollection:false,
         };
     }
-    
+
+    componentDidMount(){
+      this.get()
+    }
+
+    get() {
+      if (this.props.type == 'order') {
+        var params = {
+          classid: '34ebc920-07d6-4157-8f86-1110f1288d54',
+          num:'10',
+          searchField:'tcentertype',
+          searchValue:this.props.id
+        };
+        Model.FindInfoList(params,(res)=>{
+            this.setState({infos: res.infos})
+        },(err)=>{
+
+        });
+      } else {
+        var params = {
+          classid: '34ebc920-07d6-4157-8f86-1110f1288d54',
+          num:'10',
+          ecentertype:this.props.id
+        };
+        Model.getRandomTest(params,(res)=>{
+            this.setState({infos: res.infos})
+        },(err)=>{
+
+        });
+      }
+
+
+    }
+
     pushPage = () =>{
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(()=>{
@@ -189,28 +224,3 @@ const styles = StyleSheet.create({
     },
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
