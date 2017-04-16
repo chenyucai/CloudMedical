@@ -16,7 +16,7 @@ let ApiConst = {
 		 * 网址都写在这里,如下
 		 */
         BaseUrl: "http://english.xuexicheng.cn",
-		ImageBaseUrl:"http://english.xuexicheng.cn/jlJavaPlat/pub/admin/upload/"
+		ImageBaseUrl:"http://english.xuexicheng.cn/Cloudm/pub/admin/upload/"
 	},
 	TEST: {
 		/**

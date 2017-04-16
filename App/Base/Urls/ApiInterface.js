@@ -10,8 +10,17 @@ let ApiInterface = {
   UpdatePsw: '/jlJavaPlat/pub/admin/information/Infohtml/resetpassword.do',
   FindPsw: '/jlJavaPlat/pub/admin/information/Infohtml/selectpassword.do',
 
-  // 获取广告
+  // 获取广告、获取快捷菜单下的列表
   GetInfoList: '/Cloudm/pub/admin/information/Infohtml/findInfoList.do',
+
+  //获取快捷菜单
+  GetSearchColumn: '/Cloudm/pub/admin/column/manageColumn/searchColumn.do',
+
+  //快捷菜单下的列表详情
+  GetListDetial: '/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do',
+
+  //获取个人中心
+  GetPersonCenter: "/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do",
 
 };
 export default ApiInterface;

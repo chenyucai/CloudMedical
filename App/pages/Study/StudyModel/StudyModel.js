@@ -13,6 +13,18 @@ let Model = {
             ...pa,
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetInfoList, FetchUtil.toQueryString(params), response, error);
-    }
+    },
+    getSearchColumn(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetSearchColumn, FetchUtil.toQueryString(params), response, error);
+    },
+    getListDetialColumn(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetListDetial, FetchUtil.toQueryString(params), response, error);
+    },
 };
 export default Model;
