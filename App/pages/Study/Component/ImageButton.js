@@ -7,6 +7,8 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native';
+import One from '../Basic/One';
+
 let GOBAL_WIDTH=Dimensions.get('window').width;
 export default class Overview extends Component {
     render() {
@@ -20,6 +22,7 @@ export default class Overview extends Component {
                 backgroundColor: '#fff',
             }} onPress={()=> {
                 this.props.onPress && this.props.onPress()
+
             }}>
                 <Image style={{width: GOBAL_WIDTH/10, height: GOBAL_WIDTH/10,resizeMode:'stretch'}}
                        source={{uri: this.props.source}}/>

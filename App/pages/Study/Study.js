@@ -168,30 +168,32 @@ export default class Study extends Component {
     )
   }
 
+  go(classid){
+    this.props.navigator.push({
+      name: 'One',
+      component: One,
+      params:{
+        classid: classid
+      }
+    })
+  }
+
   renderItem(){
     var items = [];
     var data = this.state.SearchColumndata;
     for (var i = 0; i < data.length; i++) {
       var classid = data[i].classid;
-
       items.push(
-        <TouchableOpacity key={i} onPress={() => {
-          console.log(1);
-          this.props.navigator.push({
-            component:One,
-            params:{
-              classid: classid
-            }
-          })
-        }}>
+        <View key={i}>
           <ImageButton
             source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
             // source={''ApiConst.Versions().ImageBaseUrl' + 'ApiInterface.GetInfoList' + 'data[i].classimg''}
             Txt={data[i].bname}
             classid={classid}
             navigator={this.props.navigator}
-            />
-        </TouchableOpacity>
+            onPress={this.go.bind(this,classid)}
+          />
+        </View>
 
       )
     }

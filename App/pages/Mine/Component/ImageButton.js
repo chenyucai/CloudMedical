@@ -18,11 +18,6 @@ export default class Overview extends Component {
       };
   }
 
-  go(){
-    console.log(this.props.navigator);
-    
-  }
-
     render() {
         return (
             <TouchableOpacity style={{
