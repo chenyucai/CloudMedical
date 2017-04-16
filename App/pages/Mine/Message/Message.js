@@ -10,15 +10,18 @@ import {
   InteractionManager,
   Dimensions,
   ListView,
-  
+
 } from 'react-native';
 const { width, height } = Dimensions.get( 'window' );
 import NavigationBar from 'react-native-navbar';
 import styleUtil from  '../../../utils/styleutil';
 import MessageDetail from '../Message/MessageDetail';
 
+import Model from '../../../Model/Model';
+import FormatUtil from '../../../utils/FormatUtil'
+
 export default class Message extends Component {
-  
+
   // 构造
   constructor( props ) {
     super( props );
@@ -26,24 +29,45 @@ export default class Message extends Component {
     this.state = {
       dataSource: new ListView.DataSource( {
         rowHasChanged: ( r1, r2 ) => r1 != r2
-      } ).cloneWithRows( [ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', ] )
+      } )
     };
   }
-  
-  goPushDetail = () => {
+
+  componentDidMount(){
+    this.get()
+  }
+
+  get(){
+    var params = {
+      classid: '4785c0d0-90f2-42c2-9ec9-95ba415399fa',
+      num:'1000',
+      page:'1'
+    };
+    Model.FindInfoList(params,(res)=>{
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(res.infos)})
+    },(err)=>{
+
+    });
+  }
+
+  goPushDetail = (rowData) => {
     const { navigator } = this.props;
     InteractionManager.runAfterInteractions( () => {
       if ( navigator ) {
         navigator.push( {
           component: MessageDetail,
+          params:{
+            classid: rowData.classid,
+            id: rowData.id
+          }
         } )
       }
     } )
   };
-  
+
   renderRow = ( rowData ) => {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => this.goPushDetail()}
+      <TouchableOpacity activeOpacity={1} onPress={() => this.goPushDetail(rowData)}
                         style={{ marginTop: 10,backgroundColor:'#fff' }}>
         <Image
           source={require('./Component/xuxian.png')}
@@ -52,14 +76,14 @@ export default class Message extends Component {
         <View style={{flex:1,paddingHorizontal:30,flexDirection:'row',paddingVertical:8,
                 justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff'}}>
           <Text numberOfLines={1} style={{fontSize:14}}>
-            {'标题:习近平主持政治局会议六中全会10月召开'}
+            {rowData.title}
           </Text>
         </View>
         <View style={{width:width,height:1,backgroundColor:'#e1e1e1'}}/>
         <View style={{flex:1,flexDirection:'row',paddingHorizontal:30,paddingVertical:5,
                 justifyContent:'flex-start',alignItems:'center'}}>
-          <Text >{'发布人'}</Text>
-          <Text style={{marginLeft:60}}>{'2017-02-16'}</Text>
+          <Text >{rowData.username}</Text>
+          <Text style={{marginLeft:60}}>{FormatUtil.format(rowData.newstime)}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -105,5 +129,5 @@ const styles = StyleSheet.create( {
     flex: 1,
     backgroundColor: '#f0f0f2'
   },
-  
+
 } );
