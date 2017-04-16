@@ -14,7 +14,7 @@ let MyDialog = {
                 CalendarManager.showLoading(data);
             }
         } else {
-            NativeModules.MyDialog.showMyDialogProgress(data);
+            // NativeModules.MyDialog.showMyDialogProgress(data);
         }
     },
     // /*
@@ -42,7 +42,7 @@ let MyDialog = {
                 CalendarManager.dismiss('');
             }
         } else {
-            NativeModules.MyDialog.cancel();
+            // NativeModules.MyDialog.cancel();
         }
     },
     //普通toast
@@ -52,7 +52,7 @@ let MyDialog = {
                 CalendarManager.showInfo(src);
             }
         } else {
-            NativeModules.MyDialog.showText(src);
+            // NativeModules.MyDialog.showText(src);
         }
     },
     //正确信息toast
@@ -62,7 +62,7 @@ let MyDialog = {
                 CalendarManager.showInfo(src);
             }
         } else {
-            NativeModules.MyDialog.showSuccessToast(src);
+            // NativeModules.MyDialog.showSuccessToast(src);
         }
 
     },
@@ -73,7 +73,7 @@ let MyDialog = {
                 CalendarManager.showInfo(src);
             }
         } else {
-            NativeModules.MyDialog.showErrorToast(src);
+            // NativeModules.MyDialog.showErrorToast(src);
         }
 
     },
