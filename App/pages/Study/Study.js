@@ -32,6 +32,7 @@ import Eleven from './Basic/Eleven';
 const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
 const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
+// import ApiConst from '../../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
@@ -54,7 +55,7 @@ export default class Study extends Component {
 
     this.state = {
       viewpageDataSource: ds,
-      data:[]
+      SearchColumndata:[]
     };
   }
 
@@ -65,22 +66,40 @@ export default class Study extends Component {
       num:'3'
     };
     StudyModel.getInfoList(params,(res)=>{
-        console.log(res)
-        this.setState({data:res.rs})
+        // console.log(res)
+        // this.setState({data:res.rs})
     },(err)=>{
 
     });
   }
 
-  renderRow(){
-    var arr = []
-    for (var i = 0; i < this.state.data.length; i++) {
-      arr.push(
-        <Text>1231</Text>
-      )
-    }
-    return arr
+  getSearchColumn() {
+    var params = {
+      bclassid: 'cbe62fbf-09b7-4b61-ad23-a9c1dffc1414',
+      nowPage:'1',
+      pageSize:'1000'
+    };
+    StudyModel.getSearchColumn(params,(res)=>{
+        // console.log(res)
+        this.setState({SearchColumndata:res.infos})
+    },(err)=>{
+
+    });
   }
+
+  componentDidMount(){
+    this.getSearchColumn();
+  }
+
+  // renderRow(){
+  //   var arr = []
+  //   for (var i = 0; i < this.state.data.length; i++) {
+  //     arr.push(
+  //       <Text>1231</Text>
+  //     )
+  //   }
+  //   return arr
+  // }
 
   _renderPage22( data, pageID ) {
     return (
@@ -119,8 +138,37 @@ export default class Study extends Component {
     )
   }
 
+  renderItem(){
+    var items = [];
+    var data = this.state.SearchColumndata;
+    for (var i = 0; i < data.length; i++) {
+      var classid = data[i].classid;
+
+      items.push(
+        <TouchableOpacity key={i} onPress={() => {
+          console.log(1);
+          this.props.navigator.push({
+            component:One,
+            params:{
+              classid: classid
+            }
+          })
+        }}>
+          <ImageButton
+            source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
+            // source={''ApiConst.Versions().ImageBaseUrl' + 'ApiInterface.GetInfoList' + 'data[i].classimg''}
+            Txt={data[i].bname}
+            classid={classid}
+            navigator={this.props.navigator}
+            />
+        </TouchableOpacity>
+
+      )
+    }
+    return items;
+  }
+
   render() {
-    this.getInfoList();
     var navTintColor = styleUtil.getNavTintColor();
     var titleTintColor = styleUtil.getTitleTintColor();
     var titleConfig = {
@@ -129,7 +177,6 @@ export default class Study extends Component {
     };
     return (
       <View style={{backgroundColor:'white',flex:1}}>
-        {this.renderRow()}
         <StatusBar
           barStyle={'light-content'}
           animated={true}
@@ -150,7 +197,8 @@ export default class Study extends Component {
           <Text style={{fontSize:14,color:'black',paddingVertical:10,marginLeft:10}}>快捷菜单</Text>
           <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-            <ImageButton
+            {this.renderItem()}
+            {/* <ImageButton
               source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
               Txt="医学基础"
               onPress={() => {
@@ -277,7 +325,7 @@ export default class Study extends Component {
                                         this.props.navigator.push({
                                             component:KnowledgeDetail
                                         })
-                                }}/>
+                                }}/> */}
           </View>
           <View style={{width:DEVICE_WIDTH,height:10,backgroundColor:'#efefef'}}/>
           <Text style={{fontSize:14,color:'black',paddingVertical:10,marginLeft:10}}>药圈</Text>

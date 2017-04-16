@@ -14,12 +14,74 @@ import styleUtil from  '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import ImageButton from '../Component/ImageButton';
 import KnowledgeDetail from './Detail/KnowledgeDetail';
+/**
+ * 请求的model
+ */
+import StudyModel from '../StudyModel/StudyModel'
 export default class One extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          Listdata: [],
+          SearchColumndata: []
         };
     }
+
+    // getInfoList() {
+    //   var classid = this.props.classid
+    //   console.log(classid);
+    //   var params = {
+    //     classid: classid,
+    //     page:'1',
+    //     num:'3'
+    //   };
+    //   StudyModel.getInfoList(params,(res)=>{
+    //       // console.log(res)
+    //       this.setState({Listdata:res.infos})
+    //   },(err)=>{
+    //
+    //   });
+    // }
+
+    getSearchColumn() {
+      var bclassid = this.props.classid
+      console.log(bclassid);
+      var params = {
+        bclassid: bclassid,
+        // nowPage:'1',
+        // pageSize:'1000'
+      };
+      StudyModel.getSearchColumn(params,(res)=>{
+          // console.log(res)
+          this.setState({SearchColumndata:res.infos})
+      },(err)=>{
+
+      });
+    }
+
+    componentDidMount(){
+      this.getSearchColumn();
+      // this.getInfoList();
+    }
+
+    renderItem() {
+      var items = [];
+      var data = this.state.SearchColumndata;
+      console.log(data);
+      for (var i = 0; i < data.length; i++) {
+        <ImageButton
+            source={'http://163.177.128.179:39241/59430fe34f2f88cfebe6119d1d38f66c'}
+            Txt={data[i].bname}
+            onPress={() => {
+            this.props.navigator.push({
+                id: this.state.SearchColumndata[i].id,
+                classid: this.state.SearchColumndata[i].classid
+            })
+          }}/>
+      }
+      return items;
+    }
+
     render() {
         var navTintColor = styleUtil.getNavTintColor();
         var titleTintColor = styleUtil.getTitleTintColor();
@@ -46,7 +108,8 @@ export default class One extends Component {
                                leftButton={leftbutton}
                 />
                 <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-                    <ImageButton
+                    {this.renderItem()}
+                    {/* <ImageButton
                         source={'http://163.177.128.179:39241/59430fe34f2f88cfebe6119d1d38f66c'}
                         Txt="解剖基础"
                         onPress={() => {
@@ -78,7 +141,7 @@ export default class One extends Component {
                                         this.props.navigator.push({
                                             component:KnowledgeDetail
                                         })
-                                }}/>
+                                }}/> */}
                 </View>
 
             </View>
