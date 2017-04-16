@@ -26,7 +26,7 @@ project.xcworkspace
 #
 build/
 .idea
-.gradle
+
 local.properties
 *.iml
 
@@ -52,17 +52,3 @@ android/app/libs
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
-/Channel
-/android/app/*.iml
-/android/local.properties
-/android/app/*.iml
-/android/Channel.iml
-/android/gradle
-/android/gradle
-/android/local.properties
-/android/gradlew
-/android/local.properties
-/android/Channel.iml
-/android/local.properties
-/android/local.properties
-/android/local.properties
