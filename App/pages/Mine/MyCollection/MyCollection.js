@@ -54,7 +54,7 @@ export default class MyCollection extends Component {
       });
     }
 
-    
+    render
 
     render() {
         const navTintColor = styleUtil.getNavTintColor();
