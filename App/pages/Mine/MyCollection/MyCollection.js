@@ -23,7 +23,7 @@ import CollectionDetail from './CollectionDetail';
 /**
  * 请求的model
  */
-import MineModel from './MineModel/MineModel'
+import MineModel from '../MineModel/MineModel'
 
 
 export default class MyCollection extends Component {
@@ -45,7 +45,7 @@ export default class MyCollection extends Component {
       var params = {
         classid: '205a0525-b63e-49dd-8553-831436562b39',
         page:'1',
-        num:'3'
+        num:'1000'
       };
       MineModel.getInfoList(params,(res)=>{
           this.setState({infos: res.infos})
@@ -53,6 +53,8 @@ export default class MyCollection extends Component {
 
       });
     }
+
+    
 
     render() {
         const navTintColor = styleUtil.getNavTintColor();

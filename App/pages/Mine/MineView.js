@@ -68,7 +68,7 @@ export default class MineView extends Component{
       console.log(data);
       for (var i = 0; i < data.length; i++) {
         items.push(
-          <Image style={styles.imageViewStyle} source={{uri:'http://pic.58pic.com/58pic/15/15/35/08858PICGTF_1024.jpg'}}>
+          <Image style={styles.imageViewStyle} key={i} source={{uri:'http://pic.58pic.com/58pic/15/15/35/08858PICGTF_1024.jpg'}}>
               <View style={styles.headerViewStyle}>
                   <TouchableOpacity activeOpacity={1} onPress={()=>{
                       const {navigator} = this.props;
