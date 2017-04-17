@@ -33,25 +33,67 @@ export default class SimulationTest extends Component {
             infos:[],
             optLabels:['A','B','C','D','E','F','G','H'],
             selected: '',
-            status:''
+            status:'',
+            total: 100,
+            remain:100,
+            score: 0,
+            disabled:false,
+            time:0
         };
     }
 
     componentDidMount(){
-      this.get()
+      this.get();
+      this.myVar=setInterval(() => {
+        this.setState({
+          time: this.state.time + 1
+        })
+      },1000);
     }
 
     check(){
-      var ans = this.state.infos[this.state.index].tanswer;
-      if (this.state.selected == ans) {
+      if (!this.state.disabled) {
         this.setState({
-          status: 'corret'
-        })
-      } else {
+          disabled: true
+        });
+
+        var ans = this.state.infos[this.state.index].tanswer;
+        if (this.state.remain == 0) {
+          this.setState({
+            modalVisible: true
+          });
+          return false;
+        }
         this.setState({
-          status: 'fault'
-        })
+          remain: this.state.remain - 1,
+        });
+
+        if (this.state.selected == ans) {
+          this.setState({
+            status: 'corret',
+            score: this.state.score + 1
+          })
+        } else {
+          this.setState({
+            status: 'fault'
+          })
+        }
+
+        this.timer = setTimeout(() => {
+          this.setState({
+            disabled: false
+          });
+          if (this.state.index != this.state.infos.length-1) {
+            this.setState({
+              index: this.state.index + 1,
+              selected: '',
+              status:''
+            })
+          }
+        },2000);
       }
+
+
     }
 
     renderStatus(){
@@ -81,7 +123,7 @@ export default class SimulationTest extends Component {
       var params = {
         pepleid:'d798f305-497a-4b85-8927-17197c918ac3',
         istrue:'0',
-        tcentertype:this.props.id
+        centertype:this.props.id
       };
       Model.startExam(params,(res)=>{
           this.setState({
@@ -231,10 +273,10 @@ export default class SimulationTest extends Component {
                         justifyContent: 'space-around',
                         alignItems: 'center',
                     }}>
-                        <Text>{'总计'}<Text style={{color: '#3f51b5'}}>{'100'}</Text>{'题'}</Text>
-                        <Text style={{marginLeft: 30}}>{'剩余'}<Text style={{color: '#259b24'}}>{'99'}</Text>{'题'}</Text>
-                        <Text style={{marginLeft: 30}}>{'得分'}<Text style={{color: '#ff5722'}}>{'1分'}</Text></Text>
-                        <Text style={{marginLeft: 30}}>{'倒计时'}<Text style={{color: '#ff5722'}}>{'33:33'}</Text></Text>
+                        <Text>{'总计'}<Text style={{color: '#3f51b5'}}>{this.state.total}</Text>{'题'}</Text>
+                        <Text style={{marginLeft: 30}}>{'剩余'}<Text style={{color: '#259b24'}}>{this.state.remain}</Text>{'题'}</Text>
+                        <Text style={{marginLeft: 30}}>{'得分'}<Text style={{color: '#ff5722'}}>{this.state.score}</Text></Text>
+                        <Text style={{marginLeft: 30}}>{'用时'}<Text style={{color: '#ff5722'}}>{this.state.time}</Text></Text>
                     </View>
                     <View style={{
                         marginLeft: width * 0.01,
@@ -248,17 +290,23 @@ export default class SimulationTest extends Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            paddingHorizontal: 8
+                            paddingHorizontal: 8,
+                            paddingVertical:10
                         }}>
-                            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',}}>
-                                {/* <Text>{'我的答案: B'}</Text>
-                                <Image
-                                    source={{uri: 'http://163.177.128.179:39241/3c95db00cff311b9ad35d86ee893ef75'}}
-                                    style={{width: 20, height: 20, marginLeft: 20}}
-                                />
-                                <Text style={{marginLeft: 30}}>{'得分:  1分'}</Text> */}
-                            </View>
-                            {this.renderJx()}
+                          <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',}}>
+                              <Text>{'我的答案: '+this.state.selected}</Text>
+                              {this.renderStatus()}
+                              {/* <Image
+                                  source={{uri:'http://163.177.128.179:39241/91b3aff9a79cf71dc9a4a804021d3a6c'}}
+                                  style={{width:20,height:20,marginLeft:20}}
+                              />
+                              <Image
+                                  source={{uri:'http://163.177.128.179:39241/3c95db00cff311b9ad35d86ee893ef75'}}
+                                  style={{width:20,height:20,marginLeft:20}}
+                              /> */}
+
+                          </View>
+
                             <TouchableOpacity ouchableOpacity
                               onPress={this.check.bind(this)}
                               style={{
@@ -270,6 +318,7 @@ export default class SimulationTest extends Component {
                                 backgroundColor: '#26a69a',
                                 marginRight: 10,
                                 borderRadius: 6,
+
                             }}>
                                 <Text style={{color: '#fff'}}>{'确定'}</Text>
                             </TouchableOpacity>
@@ -361,14 +410,14 @@ export default class SimulationTest extends Component {
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: '#888888', marginTop: 10}}>{'模拟考试总分:'}
                         <Text style={{color: 'red'}}>
-                            {'99分'}
+                            {this.state.score}
                         </Text>
                     </Text>
                 </View>
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: '#888888', marginTop: 10}}>{'考试时间:'}
                         <Text style={{color: '#50a39a'}}>
-                            {'33分51秒'}
+                            {this.state.time}
                         </Text>
                     </Text>
                 </View>
