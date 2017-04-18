@@ -39,7 +39,9 @@ export default class SimulationTest extends Component {
             remain:3,
             score: 0,
             disabled:false,
-            time:0
+            time:0,
+            pexamid:'',
+            point:''
         };
     }
 
@@ -55,10 +57,17 @@ export default class SimulationTest extends Component {
     endExam(){
       clearInterval(this.myVar);
       var params = {
-        pexamid:'d798f305-497a-4b85-8927-17197c918ac3',
+        pexamid:this.state.pexamid,
         usedtime: this.state.time / 60
       };
       Model.endExam(params,(res)=>{
+        if (res.flag == 1) {
+          var msg = eval('('+res.msg+')');
+          this.setState({
+            score: msg.score,
+            point: msg.getpoints
+          });
+        }
 
       },(err)=>{
 
@@ -141,9 +150,13 @@ export default class SimulationTest extends Component {
         centertype:this.props.id
       };
       Model.startExam(params,(res)=>{
-          this.setState({
-            infos: res.infos
-          })
+        var msg = eval('('+res.result.msg+')');
+        // var msg = JSON.parse(res.result.msg);
+        console.log(msg);
+        this.setState({
+          infos: res.infos,
+          pexamid: msg.pexamid
+        });
       },(err)=>{
 
       });
@@ -440,7 +453,7 @@ export default class SimulationTest extends Component {
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: 'red', marginTop: 10}}>{'获得积分:'}
                         <Text style={{color: 'red'}}>
-                            {'50'}
+                            {this.state.point}
                         </Text>
                     </Text>
                 </View>
