@@ -37,13 +37,22 @@ let Model = {
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.getRandomTest, FetchUtil.toQueryString(params), response, error);
     },
     /**
-     * 模拟考试
+     * 开始考试
      */
     startExam(pa, response, error){
         var	params = {
             ...pa,
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.startExam, FetchUtil.toQueryString(params), response, error);
+    },
+    /**
+     * 完成考试
+     */
+    endExam(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.endExam, FetchUtil.toQueryString(params), response, error);
     },
 };
 export default Model;
