@@ -9,7 +9,7 @@ import {
     } from  'react-native';
 export const STATUS_BAR_HEIGHT = (Platform.OS === 'ios' ? 20 : 25);
 import {NaviGoBack} from './utils/CommonUtils';
-
+import UserLogin from './pages/UserLogin/UserLogin';
 /**
  * 欢迎页面
  */
@@ -67,7 +67,7 @@ class rootApp extends Component{
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-                        component:initPage,
+                        component:UserLogin,
                         name:'WelcomePage'
                     }}
                 />

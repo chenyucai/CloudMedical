@@ -19,247 +19,15 @@ import styleUtil from  '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import DifficultConsolidate from '../DifficultConsolidate/DifficultConsolidate';
 
-import Model from '../../../Model/Model'
 
-
-export default class SimulationTest extends Component {
+export default class TestWinIntegralDetail extends Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {
-            modalVisible: false,
-            isCollection:false,
-            index:0,
-            infos:[],
-            optLabels:['A','B','C','D','E','F','G','H'],
-            selected: '',
-            status:'',
-            total: 100,
-            remain:100,
-            score: 0,
-            disabled:false,
-            time:0,
-            pexamid:'',
-            point:''
+            modalVisible: false
         };
-    }
-
-    componentDidMount(){
-      this.get();
-      this.myVar=setInterval(() => {
-        this.setState({
-          time: this.state.time + 1
-        })
-      },1000);
-    }
-
-    endExam(){
-      clearInterval(this.myVar);
-      var params = {
-        pexamid:this.state.pexamid,
-        usedtime: this.state.time / 60
-      };
-      Model.endExam(params,(res)=>{
-        if (res.flag == 1) {
-          var msg = eval('('+res.msg+')');
-          this.setState({
-            score: msg.score,
-            point: msg.getpoints
-          });
-        }
-
-      },(err)=>{
-
-      });
-    }
-
-    check(){
-      if (!this.state.disabled) {
-        this.setState({
-          disabled: true
-        });
-
-        var ans = this.state.infos[this.state.index].tanswer;
-        if (this.state.remain == 0) {
-          this.endExam();
-          this.setState({
-            modalVisible: true
-          });
-          return false;
-        }
-        this.setState({
-          remain: this.state.remain - 1,
-        });
-
-        if (this.state.selected == ans) {
-          this.setState({
-            status: 'corret',
-            score: this.state.score + 1
-          })
-        } else {
-          this.setState({
-            status: 'fault'
-          })
-        }
-
-        this.timer = setTimeout(() => {
-          this.setState({
-            disabled: false
-          });
-          if (this.state.index != this.state.infos.length-1) {
-            this.setState({
-              index: this.state.index + 1,
-              selected: '',
-              status:''
-            })
-          }
-        },2000);
-      }
-
-
-    }
-
-    renderStatus(){
-      if (this.state.status == 'corret') {
-        return (
-          <Image
-              source={{uri:'http://163.177.128.179:39241/3c95db00cff311b9ad35d86ee893ef75'}}
-              style={{width:20,height:20,marginLeft:20}}
-          />
-        )
-      }
-
-      if (this.state.status == 'fault') {
-        return (
-          <Image
-              source={{uri:'http://163.177.128.179:39241/91b3aff9a79cf71dc9a4a804021d3a6c'}}
-              style={{width:20,height:20,marginLeft:20}}
-          />
-        )
-
-      }
-
-
-    }
-
-    get() {
-      var params = {
-        pepleid:'d798f305-497a-4b85-8927-17197c918ac3',
-        istrue:'1',
-        centertype:this.props.id
-      };
-      Model.startExam(params,(res)=>{
-        var msg = eval('('+res.result.msg+')');
-        // var msg = JSON.parse(res.result.msg);
-        console.log(msg);
-        this.setState({
-          infos: res.infos,
-          pexamid: msg.pexamid
-        });
-      },(err)=>{
-
-      });
-
-    }
-
-    select(label){
-      this.setState({
-        selected: label,
-        status:''
-      })
-    }
-
-    renderQue(){
-      if (this.state.infos.length != 0) {
-        var obj = this.state.infos[this.state.index];
-        var opts = obj.toption.split('|||||');
-        var optsArr = [];
-        for (var i = 0; i < opts.length; i++) {
-          // optsArr.push({
-          //   label: this.state.optLabels[i],
-          //   ans:opts[i]
-          // });
-          var label = this.state.optLabels[i];
-          optsArr.push(
-            <TouchableOpacity key={i}
-              onPress={this.select.bind(this, label)}
-               style={{flex:1,flexDirection:'row',paddingHorizontal:20,alignItems:'center',marginBottom:10}}>
-                <View style={{width:20,height:20,borderRadius:10,backgroundColor:'#78909c',
-                justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{color:'#fff',backgroundColor:'transparent'}}>{this.state.optLabels[i]}</Text></View>
-                <Text style={{marginLeft:10}}>{opts[i]}</Text>
-            </TouchableOpacity>
-          )
-        }
-
-        return (
-          <View>
-            <View style={{paddingVertical:8,flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingHorizontal:8}}>
-                <Text>{this.state.index+1}{obj.title}</Text>
-            </View>
-            <View style={{width:width*0.98,height:1,backgroundColor:'#e1e1e1',marginBottom:4}}/>
-            <View style={{flex:4,justifyContent:'center'}}>
-              {optsArr}
-                {/* <View style={{flex:1,flexDirection:'row',paddingHorizontal:20}}>
-                    <View style={{width:20,height:20,borderRadius:10,backgroundColor:'#78909c',
-                    justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{color:'#fff',backgroundColor:'transparent'}}>A</Text></View>
-                    <Text style={{marginLeft:10}}>{'淋巴瘤'}</Text>
-                </View>
-                <View style={{flex:1,flexDirection:'row',paddingHorizontal:20}}>
-                    <View style={{width:20,height:20,borderRadius:10,backgroundColor:'#e84e40',
-                    justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{color:'#fff',backgroundColor:'transparent'}}>B</Text></View>
-                    <Text style={{marginLeft:10}}> {'垂体瘤'}</Text>
-                </View>
-                <View style={{flex:1,flexDirection:'row',paddingHorizontal:20}}>
-                    <View style={{width:20,height:20,borderRadius:10,backgroundColor:'#78909c',
-                    justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{color:'#fff',backgroundColor:'transparent'}}>C</Text></View>
-                    <Text style={{marginLeft:10}}>{'肝血管瘤'}</Text>
-                </View>
-                <View style={{flex:1,flexDirection:'row',paddingHorizontal:20}}>
-                    <View style={{width:20,height:20,borderRadius:10,backgroundColor:'#78909c',
-                    justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{color:'#fff',backgroundColor:'transparent'}}>D</Text></View>
-                    <Text style={{marginLeft:10}}>{'子宫肌瘤'}</Text>
-                </View> */}
-
-            </View>
-          </View>
-        )
-      }
-    }
-
-    renderJx(){
-      if (this.state.status != '') {
-        return (
-          <View style={{}}>
-            <View style={{width:width*0.98,height:40,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:8}}>
-                <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',}}>
-                    <Text>{'我的答案: '+this.state.selected}</Text>
-                </View>
-                <TouchableOpacity activeOpacity={1} onPress={()=>this.setState({isCollection:!this.state.isCollection})}>
-                    <Image
-
-                        source={{uri:this.state.isCollection ?
-                        'http://163.177.128.179:39241/420242252eb95b65f329d0ef59901f9c'
-                        : 'http://163.177.128.179:39241/24c82d75d6588884630304529e8477e4'}}
-                        style={{width:30,height:30,marginRight:30,}}
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={{width:width*0.98,height:1,backgroundColor:'#e1e1e1',marginBottom:4}}/>
-            <View style={{paddingLeft:10,paddingRight:10}}>
-                <Text>{'解析:'}</Text>
-                <Text style={{marginBottom:30}}>
-                    {this.state.infos[this.state.index].tcontent}
-                </Text>
-            </View>
-          </View>
-        )
-      }
     }
 
 
@@ -292,52 +60,77 @@ export default class SimulationTest extends Component {
                 />
                 <ScrollView>
                     <View style={{
-                        width: width,
-                        height: 30,
-                        paddingHorizontal: 30,
-                        borderRadius: 4,
-                        backgroundColor: '#f9f9f9',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
+                        width: width, height: 30, paddingHorizontal: 30,
+                        borderRadius: 4, backgroundColor: '#f9f9f9', flexDirection: 'row', justifyContent: 'flex-start',
                         alignItems: 'center',
                     }}>
-                        <Text>{'总计'}<Text style={{color: '#3f51b5'}}>{this.state.total}</Text>{'题'}</Text>
-                        <Text style={{marginLeft: 30}}>{'剩余'}<Text style={{color: '#259b24'}}>{this.state.remain}</Text>{'题'}</Text>
-                        {/* <Text style={{marginLeft: 30}}>{'得分'}<Text style={{color: '#ff5722'}}>{this.state.score}</Text></Text> */}
-                        <Text style={{marginLeft: 30}}>{'用时'}<Text style={{color: '#ff5722'}}>{this.state.time}</Text></Text>
+                        <Text>{'总计'}<Text style={{color: '#3f51b5'}}>{'100'}</Text>{'题'}</Text>
+                        <Text style={{marginLeft: 30}}>{'剩余'}<Text style={{color: '#259b24'}}>{'99'}</Text>{'题'}</Text>
+                        <Text style={{marginLeft: 30}}>{'倒计时'}<Text style={{color: '#ff5722'}}>{'33:33'}</Text></Text>
                     </View>
                     <View style={{
-                        marginLeft: width * 0.01,
+                        width: width * 0.98, height: 300, marginLeft: width * 0.01,
                         borderRadius: 4, backgroundColor: '#fff', marginTop: 10
                     }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            paddingHorizontal: 8
+                        }}>
+                            <Text>{'1.检测要求报告的肿瘤病例应包括()'}</Text>
+                        </View>
+                        <View style={{width: width * 0.98, height: 1, backgroundColor: '#e1e1e1', marginBottom: 4}}/>
+                        <View style={{flex: 4, justifyContent: 'center'}}>
+                            <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+                                <View style={{
+                                    width: 20, height: 20, borderRadius: 10, backgroundColor: '#78909c',
+                                    justifyContent: 'center', alignItems: 'center'
+                                }}>
+                                    <Text style={{color: '#fff', backgroundColor: 'transparent'}}>A</Text></View>
+                                <Text style={{marginLeft: 10}}>{'淋巴瘤'}</Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+                                <View style={{
+                                    width: 20, height: 20, borderRadius: 10, backgroundColor: '#e84e40',
+                                    justifyContent: 'center', alignItems: 'center'
+                                }}>
+                                    <Text style={{color: '#fff', backgroundColor: 'transparent'}}>B</Text></View>
+                                <Text style={{marginLeft: 10}}> {'垂体瘤'}</Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+                                <View style={{
+                                    width: 20, height: 20, borderRadius: 10, backgroundColor: '#78909c',
+                                    justifyContent: 'center', alignItems: 'center'
+                                }}>
+                                    <Text style={{color: '#fff', backgroundColor: 'transparent'}}>C</Text></View>
+                                <Text style={{marginLeft: 10}}>{'肝血管瘤'}</Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'row', paddingHorizontal: 20}}>
+                                <View style={{
+                                    width: 20, height: 20, borderRadius: 10, backgroundColor: '#78909c',
+                                    justifyContent: 'center', alignItems: 'center'
+                                }}>
+                                    <Text style={{color: '#fff', backgroundColor: 'transparent'}}>D</Text></View>
+                                <Text style={{marginLeft: 10}}>{'子宫肌瘤'}</Text>
+                            </View>
 
-                        {this.renderQue()}
+                        </View>
                         <View style={{width: width * 0.98, height: 1, backgroundColor: '#e1e1e1', marginBottom: 4}}/>
                         <View style={{
                             flex: 1,
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            paddingHorizontal: 8,
-                            paddingVertical:10
+                            paddingHorizontal: 8
                         }}>
-                          <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',}}>
-                              <Text>{'我的答案: '+this.state.selected}</Text>
-                              {this.renderStatus()}
-                              {/* <Image
-                                  source={{uri:'http://163.177.128.179:39241/91b3aff9a79cf71dc9a4a804021d3a6c'}}
-                                  style={{width:20,height:20,marginLeft:20}}
-                              />
-                              <Image
-                                  source={{uri:'http://163.177.128.179:39241/3c95db00cff311b9ad35d86ee893ef75'}}
-                                  style={{width:20,height:20,marginLeft:20}}
-                              /> */}
+                            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',}}>
+                                <Text>{'我的答案: B'}</Text>
 
-                          </View>
 
-                            <TouchableOpacity ouchableOpacity
-                              onPress={this.check.bind(this)}
-                              style={{
+                            </View>
+                            <View style={{
                                 width: 60,
                                 height: 24,
                                 flexDirection: 'row',
@@ -346,10 +139,9 @@ export default class SimulationTest extends Component {
                                 backgroundColor: '#26a69a',
                                 marginRight: 10,
                                 borderRadius: 6,
-
                             }}>
                                 <Text style={{color: '#fff'}}>{'确定'}</Text>
-                            </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={{width: width * 0.98, height: 1, backgroundColor: '#e1e1e1', marginBottom: 4}}/>
                         <View style={{
@@ -417,17 +209,9 @@ export default class SimulationTest extends Component {
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
                     <View style={{flex: 1}}/>
                     <Text style={{flex: 1, fontSize: 16, color: '#333333', marginTop: 10}}>恭喜您!</Text>
-                    <TouchableOpacity style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        marginRight: 8
-                    }}
-                                      onPress={() => this.setState({modalVisible: false})}>
-                        <Image style={{width: 20, height: 20}}
-                               source={{uri: 'http://163.177.128.179:39241/8620aef6097391212d20046e7eecb6cc'}}/>
-                    </TouchableOpacity>
+                    <Text style={{flex: 1, textAlign: 'right', marginRight: 8}}
+                          onPress={() => this.setState({modalVisible: false})}
+                    >X</Text>
                 </View>
                 <View style={{
                     width: width - 100,
@@ -439,24 +223,25 @@ export default class SimulationTest extends Component {
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: '#888888', marginTop: 10}}>{'考试总分:'}
                         <Text style={{color: 'red'}}>
-                            {this.state.score}
+                            {'99分'}
                         </Text>
                     </Text>
                 </View>
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: '#888888', marginTop: 10}}>{'考试时间:'}
                         <Text style={{color: '#50a39a'}}>
-                            {this.state.time}
+                            {'33分51秒'}
                         </Text>
                     </Text>
                 </View>
                 <View style={{width: width - 80, paddingHorizontal: 60}}>
                     <Text style={{fontSize: 14, color: 'red', marginTop: 10}}>{'获得积分:'}
                         <Text style={{color: 'red'}}>
-                            {this.state.point}
+                            {'50'}
                         </Text>
                     </Text>
                 </View>
+
 
                 <TouchableOpacity style={{
                     width: width - 160,

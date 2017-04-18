@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -10,14 +10,14 @@ import {
     ListView,
     TouchableOpacity
 } from 'react-native';
-import styleUtil from  '../../../utils/styleutil';
+import styleUtil from '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import AnnounceDetail from '../AnnounceDetail';
 import StudyModel from '../StudyModel/StudyModel';
-import FormatUtil from '../../../utils/FormatUtil'
-
+import FormatUtil from '../../../utils/FormatUtil';
+import VideoPlay from './VideoPlay';
 export default class ZiXun extends Component {
-    constructor(props) {
+     constructor(props) {
         super(props);
         this.state = {
             dataSource1: new ListView.DataSource({
@@ -39,41 +39,49 @@ export default class ZiXun extends Component {
         //     dataSource1: this.state.dataSource1.cloneWithRows(Info)
         // })
 
-      this.getNewsList();
+        this.getNewsList();
     }
 
-    getNewsList(){
-      var params = {
-        classid: this.props.classid,
-        page:'1',
-        num:'1000'
-      };
-      StudyModel.getNewsList(params,(res)=>{
-          // console.log(res)
-          this.setState({dataSource1:this.state.dataSource1.cloneWithRows(res.infos)})
-      },(err)=>{
+    getNewsList() {
+        var params = {
+            classid: this.props.classid,
+            page: '1',
+            num: '1000'
+        };
+        StudyModel.getNewsList(params, (res) => {
+            // console.log(res)
+            this.setState({ dataSource1: this.state.dataSource1.cloneWithRows(res.infos) })
+        }, (err) => {
 
-      });
+        });
     }
 
     renderRow(rowData) {
         return (
             <TouchableOpacity
-                style={{padding:10,justifyContent:'center',borderBottomColor:'#efefef',borderBottomWidth:1/PixelRatio.get()}}
-                            onPress={()=>{
-                                this.props.navigator.push({
-                                  name: 'AnnounceDetail',
-                                  component:AnnounceDetail,
-                                  params:{
-                                    classid:rowData.classid,
-                                    id:rowData.id
-                                  }
+                style={{ padding: 10, justifyContent: 'center', borderBottomColor: '#efefef', borderBottomWidth: 1 / PixelRatio.get() }}
+                onPress={() => {
+                    this.props.title == '视频' ? this.props.navigator.push({
+                        name: 'VideoPlay',
+                        component: VideoPlay,
+                        params: {
+                            classid: rowData.classid,
+                            id: rowData.id
+                        }
+                    }) :
+                        this.props.navigator.push({
+                            name: 'AnnounceDetail',
+                            component: AnnounceDetail,
+                            params: {
+                                classid: rowData.classid,
+                                id: rowData.id
+                            }
 
-                                })
-                              }}>
-                <Text style={{fontSize:16,color:'#333333'}}>{rowData.title}</Text>
-                <View style={{flexDirection:'row',alignItems:'center',marginTop:10}}>
-                    <Text style={{fontSize:14,color:'#888888'}}>{rowData.username} {FormatUtil.format(rowData.newstime)}</Text>
+                        })
+                }}>
+                <Text style={{ fontSize: 16, color: '#333333' }}>{rowData.title}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                    <Text style={{ fontSize: 14, color: '#888888' }}>{rowData.username} {FormatUtil.format(rowData.newstime*1000)}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -87,23 +95,23 @@ export default class ZiXun extends Component {
             title: this.props.title,
             tintColor: titleTintColor
         };
-        var leftbutton=(
-            <TouchableOpacity onPress={()=>{
+        var leftbutton = (
+            <TouchableOpacity onPress={() => {
                 this.props.navigator.pop()
             }}>
-                <View style={{justifyContent:'center',alignItems:'center',marginLeft: 10,flex: 1}}>
-                    <Image style={{width:25,height:25}} source={{uri:'http://163.177.128.179:39241/772c290f07c6331c96729751dac9993f'}}/>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10, flex: 1 }}>
+                    <Image style={{ width: 25, height: 25 }} source={{ uri: 'http://163.177.128.179:39241/772c290f07c6331c96729751dac9993f' }} />
                 </View>
             </TouchableOpacity>);
         return (
-            <View style={{backgroundColor:'white',flex:1}}>
+            <View style={{ backgroundColor: 'white', flex: 1 }}>
                 <StatusBar
                     barStyle={'light-content'}
                     animated={true}
-                    backgroundColor={navTintColor}/>
+                    backgroundColor={navTintColor} />
                 <NavigationBar tintColor={navTintColor}
-                               title={titleConfig}
-                               leftButton={leftbutton}
+                    title={titleConfig}
+                    leftButton={leftbutton}
                 />
                 <ListView
                     dataSource={this.state.dataSource1}

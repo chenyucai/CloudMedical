@@ -6,6 +6,10 @@ let ApiInterface = {
   UserLogin: '/Cloudm/pub/admin/login1.do',
   // 注册
   UserRegister: '/Cloudm/pub/admin/registerUser.do',
+  //对比验证码
+  ContrastVerity:'/Cloudm/pub/admin/information/Infohtml/zhuce.do',
+  //重设密码
+  RetPassWord:'Cloudm/pub/admin/user/organization/addStaff.do',
   GetCode: '/Cloudm/pub/admin/information/Infohtml/sendmessage.do',
   UpdatePsw: '/jlJavaPlat/pub/admin/information/Infohtml/resetpassword.do',
   FindPsw: '/jlJavaPlat/pub/admin/information/Infohtml/selectpassword.do',
@@ -30,7 +34,7 @@ let ApiInterface = {
 
   // 新闻详情
   GetNewsDetail: '/Cloudm/pub/admin/information/Infohtml/findUpdateInfo.do',
-
+  getListNews:'/Cloudm/pub/admin/getLatestNews.do',
   // 同一获取接口1
   FindInfoList: "/Cloudm/pub/admin/information/Infohtml/findInfoList.do",
 
@@ -41,10 +45,7 @@ let ApiInterface = {
   getRandomTest:'/Cloudm/pub/admin/getRandomTest.do',
 
   // 模拟考试
-  startExam: '/Cloudm/pub/admin/startExam.do',
-
-  //完成考试
-  endExam: '/Cloudm/pub/admin/endExam.do'
+  startExam: '/Cloudm/pub/admin/startExam.do'
 
 };
 export default ApiInterface;

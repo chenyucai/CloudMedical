@@ -45,6 +45,15 @@ let Model = {
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetNewsList, FetchUtil.toQueryString(params), response, error);
     },
     /**
+     * 获取新闻列表
+     */
+    getListNews(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.getListNews, FetchUtil.toQueryString(params), response, error);
+    },
+    /**
      * 获取新闻详情
      */
     getNewsDetail(pa, response, error){

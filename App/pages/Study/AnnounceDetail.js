@@ -22,7 +22,12 @@ export default class AnnounceDetail extends Component {
     constructor(props) {
         super(props);
         // 初始状态
-        this.state = {};
+        this.state = {
+            title:'',
+            newsbrief:'',
+            npicture:'',
+            ncontent:''
+        };
     }
 
     componentDidMount(){
@@ -35,7 +40,7 @@ export default class AnnounceDetail extends Component {
         id:this.props.id
       };
       StudyModel.getNewsDetail(params,(res)=>{
-        var rs = res.infos[0];
+       //alert(JSON.stringify(res.infos[0]))
         this.setState({
           ...rs
         })

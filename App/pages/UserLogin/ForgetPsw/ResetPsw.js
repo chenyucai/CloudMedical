@@ -9,13 +9,15 @@ import {
     ScrollView,
     ListView,
     TouchableOpacity,
-    TextInput
+    TextInput,
+
 } from 'react-native';
 import styleUtil from  '../../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 let DEVICE_WIDTH = Dimensions.get('window').width;
 const { width, height} = Dimensions.get('window');
 import AppMain from '../../AppMain';
+import LoginModel from'../LoginModel/LoginModel'
 export default class ResetPsw extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +26,24 @@ export default class ResetPsw extends Component {
         };
     }
     resetPst(){
+        if(this.sttate.pswed!=this.state.psw){
+            alert('两次密码不一致……')
+            return false
+        }
+        let params = {
+            password : this.state.psw ,
+            id:this.props.userid
+        }
+        
+        LoginModel.retPassWord(params, (res) => {
+            if (res.flag != 1) {
+                alert(res.msg);
+                return
+            }
+            
+        }, (err) => {
+            console.log(err);
+        });
         setTimeout(() => {
             this.setState({isShowModal:false,})
             this.props.navigator.replace({
@@ -61,13 +81,13 @@ export default class ResetPsw extends Component {
                     style={{flexDirection:'row',width:DEVICE_WIDTH-40,marginLeft:20,backgroundColor:'#fff',padding:15,alignItems:'center',marginTop:30}}>
                     <Text style={{fontSize:14,color:'#888888',marginLeft:10}}>    新密码:</Text>
                     <TextInput style={{paddingVertical:0,paddingLeft:10,flex:1}} underlineColorAndroid={'transparent'}
-                               placeholder={'新密码'}/>
+                               placeholder={'新密码'}onChangeText={(text) => { this.setState({ psw: text }) }}/>
                 </View>
                 <View
                     style={{flexDirection:'row',width:DEVICE_WIDTH-40,marginLeft:20,backgroundColor:'#fff',padding:15,alignItems:'center',marginTop:1/PixelRatio.get()}}>
                     <Text style={{fontSize:14,color:'#888888',marginLeft:10}}>重复密码:</Text>
                     <TextInput style={{paddingVertical:0,paddingLeft:10,flex:1}} underlineColorAndroid={'transparent'}
-                               placeholder={'重复新密码'}/>
+                               placeholder={'重复新密码'}onChangeText={(text) => { this.setState({ pswed: text }) }}/>
                 </View>
                 <TouchableOpacity
                     style={{width:DEVICE_WIDTH-40,paddingVertical:15,backgroundColor:'#29b6f6',marginLeft:20,marginTop:30,alignItems: 'center',justifyContent:'center',borderRadius:5}}

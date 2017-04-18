@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import styleUtil from  '../../utils/styleutil';
+
+import styleUtil from '../../utils/styleutil';
 import NavigationBar from 'react-native-navbar';
 import ViewPager from 'react-native-viewpager';
 import ImageButton from './Component/ImageButton';
@@ -29,219 +30,233 @@ import Eight from './Basic/Eight';
 import Ninght from './Basic/Ninght';
 import Ten from './Basic/Ten';
 import Eleven from './Basic/Eleven';
-const DEVICE_WIDTH = Dimensions.get( 'window' ).width;
-const DEVICE_HEIGHT = Dimensions.get( 'window' ).height;
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 import CustomBulletinBoard from './VerticalViewPager/CustomBulletinBoard';
 import ApiConst from '../../Base/Urls/ApiConst';
 /**
  * 请求的model
  */
-import StudyModel from './StudyModel/StudyModel'
-
+import StudyModel from './StudyModel/StudyModel';
+import NewsDetail from './ZiXun/NewsDetail';
 export default class Study extends Component {
-  imageArr = [
-    'http://163.177.128.179:39241/a818a6784f12ae1c3c6e617c60f0c9cc',
-    'http://163.177.128.179:39241/80541d80a3a5766b4117b7553195e5c5',
-    'http://163.177.128.179:39241/52b78d58265797bfab8773c12d1767a1'
-  ];
-  constructor( props ) {
-    super( props );
+ datasorce=new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows([])
+  constructor(props) {
+    super(props);
     // 用于构建DataSource对象
-    var ds = new ViewPager.DataSource( {
-      pageHasChanged: ( p1, p2 ) => p1 !== p2,
-    } );
-
+    var ds = new ViewPager.DataSource({
+      pageHasChanged: (p1, p2) => p1 !== p2,
+    });
 
     this.state = {
+      dataSource1: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows([]),
+      dataSource2: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows([]),
+      dataSource3: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows([]),
       viewpageDataSource: ds,
-      infos:[],
-      SearchColumndata:[],
-      medicineMenu:[]
+      infos: [],
+      SearchColumndata: [],
+      medicineMenu: []
     };
   }
 
-  componentDidMount(){
-    this.getSearchColumn();
-    this.getMedicineMenu();
+  componentDidMount() {
     this.getInfoList();
   }
-
+  //获取广告
   getInfoList() {
     var params = {
       classid: 'be68990e-6985-4b7e-9620-6d9c31c9e683',
-      page:'1',
-      num:'3'
+      page: '1',
+      num: '10'
     };
-    StudyModel.getInfoList(params,(res)=>{
-        this.setState({infos: res.infos})
-    },(err)=>{
+    StudyModel.getInfoList(params, (res) => {
+      this.setState({
+        viewpageDataSource: this.state.viewpageDataSource.cloneWithPages([res.infos[0], res.infos[1], res.infos[2]]),
+      })
+      this.getSearchColumn();
+    }, (err) => {
 
     });
   }
+  getNews(){
+    var params = {
+      classid: '097a2dce-5fcd-4801-8d01-05a09972212c',
+      page: '1',
+      num: '10'
+    };
+    StudyModel.getListNews(params, (res) => {
+      //alert(JSON.stringify(res))
+      this.setState({
+        dataSource3: this.datasorce.cloneWithRows(res.infos)
+      })
+      
+    }, (err) => {
 
-  renderInfoList(){
-    var data = [];
-    for (var i = 0; i < this.state.infos.length; i++) {
-      var item = this.state.infos[i];
-      var date = new Date(item.newstime);
-      Y = date.getFullYear() + '-';
-      M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-      D = date.getDate() + ' ';
-      h = date.getHours() + ':';
-      m = date.getMinutes() + ':';
-      s = date.getSeconds();
-      data.push(
-        <TouchableOpacity key={i}
-          style={{flexDirection:'row',flex:1,backgroundColor:'#fff',padding:15,borderBottomWidth:1/PixelRatio.get(),borderBottomColor:'#efefef',alignItems:'center'}}
-          onPress={()=>{
-                    this.props.navigator.push({
-                        component:AnnounceDetail
-                    })
-                }}>
-          <Image style={{width:50,height:50}}
-                 source={{uri:ApiConst.Versions().ImageBaseUrl+item.adpicture}}/>
-          <View style={{flex:1,marginLeft:10}}>
-            <View style={{}}>
-              <Text style={{fontSize:14,color:'#333333',textAlign:'left'}} numberOfLines={1}>{item.title}</Text>
-              <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
-                <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
-                  <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5,flex:1}}
-                        numberOfLines={1}>{item.adcontent}</Text>
-                </View>
-                <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5}}>{Y+M+D}</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )
-    }
-    return data;
+    });
   }
-
+  //获取快捷菜单
   getSearchColumn() {
     var params = {
       bclassid: 'cbe62fbf-09b7-4b61-ad23-a9c1dffc1414',
-      nowPage:'1',
-      pageSize:'1000'
+      nowPage: '1',
+      pageSize: '1000'
     };
-    StudyModel.getSearchColumn(params,(res)=>{
-        // console.log(res)
-        this.setState({SearchColumndata:res.infos})
-    },(err)=>{
+    StudyModel.getSearchColumn(params, (res) => {
+      // console.log(res)
+       this.getMedicineMenu();
+      this.setState({ dataSource1: this.datasorce.cloneWithRows(res.infos) })
+    }, (err) => {
 
     });
   }
-
+  //获取药圈
   getMedicineMenu() {
     var params = {
       bclassid: '097a2dce-5fcd-4801-8d01-05a09972212c',
-      nowPage:'1',
-      pageSize:'1000'
+      nowPage: '1',
+      pageSize: '1000'
     };
-    StudyModel.getMedicineMenu(params,(res)=>{
-        // console.log(res)
-        this.setState({medicineMenu:res.infos})
-    },(err)=>{
+    StudyModel.getMedicineMenu(params, (res) => {
+      // console.log(res)
+      this.setState({ dataSource2: this.datasorce.cloneWithRows(res.infos) })
+      this.getNews()
+    }, (err) => {
 
     });
   }
 
-  _renderPage22( data, pageID ) {
+
+  format(day, type) {
+    day = (new Date(day * 1000))
+    let Year = day.getFullYear();
+    let Month = day.getMonth() + 1;
+    let Day = day.getDate();
+    let H = day.getHours();
+    let M = day.getMinutes()
+    let date
+    if (type == 1) {
+      date = Year + '-' + (Month < 10 ? '0' + Month : Month) + '-' + (Day < 10 ? '0' + Day : Day) + ' ' + (H < 10 ? '0' + H : H) + ':' + (M < 10 ? '0' + M : M);
+    } else if (type == 0) {
+      date = Year + '-' + (Month < 10 ? '0' + Month : Month) + '-' + (Day < 10 ? '0' + Day : Day)
+    } else {
+      date = (H < 10 ? '0' + H : H) + ':' + (M < 10 ? '0' + M : M)
+    }
+    return date
+  }
+  //新闻 底部list
+  renderItemList(data) {
+    if(data==undefined){
+      return (<View/>)
+    }
     return (
-      <TouchableOpacity
-        style={{flexDirection:'row',backgroundColor:'#fff',padding:15,borderBottomWidth:1/PixelRatio.get(),borderBottomColor:'#efefef',alignItems:'center'}}
-        onPress={()=>{
-                    this.props.navigator.push({
-                        component:AnnounceDetail
-                    })
-                }}>
-        <Image style={{width:50,height:50}}
-               source={{uri:'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2528812214,2991140252&fm=80&w=179&h=119&img.GIF'}}/>
-        <View style={{flexDirection:'row',flex:1,alignItems:'center',marginLeft:10}}>
-          <View style={{alignItems:'center',justifyContent:'center'}}>
-            <Text style={{fontSize:14,color:'#333333'}} numberOfLines={1}>{'习近平主持政治局会议六中全会召开'}</Text>
-            <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
-              <View style={{flexDirection:'row',flex:1,alignItems:'center',marginTop:5}}>
-                <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5,flex:1}}
-                      numberOfLines={1}>{'公平简介介绍，文字好多,公平简介介绍，文字好多,公平简介介绍，文字好多,公平简介介绍，文字好多'}</Text>
-              </View>
-              <Text style={{fontSize:12,color:'#7f7f7f',marginRight:5,flex:1}}>{'2017-03-15'}</Text>
+      <TouchableOpacity style={{
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingRight: 10,
+        width: DEVICE_WIDTH,
+        alignItems: 'center',
+        borderBottomColor: '#efefef',
+        borderBottomWidth: 0.5
+      }}
+        onPress={() => {
+          this.props.navigator.push({
+            name: 'NewsDetail',
+            component: NewsDetail,
+            params: {
+              row: data,}})
+            }}>
+        <Image style={{ width: 60, height: 60, borderRadius: 5, flex: 1 }} source={{ uri: ApiConst.Versions().ImageBaseUrl + data.npicture.replace(',', '') }} />
+        <View style={{ justifyContent: 'center', marginLeft: 10, width: DEVICE_WIDTH - 90 }}>
+          <Text style={{ fontSize: 14, marginTop: 5, color: '#333333', flex: 1 }} numberOfLines={1}>{data.title}</Text>
+          <View style={{ flexDirection: 'row', flex: 2, alignItems: 'center', marginTop: 5, }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+              <Text style={{ fontSize: 12, color: '#7f7f7f', marginRight: 5, flex: 1.2 }}
+                numberOfLines={1}>{data.newsbrief}</Text>
             </View>
+            <Text style={{ fontSize: 12, color: '#7f7f7f', flex: 1 }} numberOfLines={1}>{this.format(data.newstime, 1)}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
   }
 
-  renderPage( data, pageID ) {
+  //轮播
+  renderPage(data, pageID) {
+    if(data==undefined){
+      return (<View/>)
+    }
     return (
-      <Image
-        key={'page' + pageID}
-        source={{uri: this.imageArr[pageID]}}
-        style={{width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.27}}
-        resizeMode={'stretch'}/>
+      <View key={'page' + pageID} style={{ width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.42 }}>
+        <Image
+          source={{ uri: ApiConst.Versions().ImageBaseUrl + data.adpicture.replace(',','') }}
+          style={{ width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.42 }}
+          resizeMode={'stretch'} />
+        <View style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: 30,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: DEVICE_WIDTH,
+          backgroundColor: '#0004'
+        }}>
+          <Text style={{ color: '#fff', fontSize: 13 }}>{data.title}</Text>
+        </View>
+      </View>
     )
   }
-
-  go(classid,title){
+  //快捷菜单
+  go(classid, title) {
     this.props.navigator.push({
       name: 'One',
       component: One,
-      params:{
+      params: {
         classid: classid,
         title: title
       }
     })
   }
-
-  renderItem(){
-    var items = [];
-    var data = this.state.SearchColumndata;
-    for (var i = 0; i < data.length; i++) {
-      var classid = data[i].classid;
-      items.push(
-        <View key={i}>
-          <ImageButton
-            source={ApiConst.Versions().ImageBaseUrl+data[i].classimg}
-            // source={''ApiConst.Versions().ImageBaseUrl' + 'ApiInterface.GetInfoList' + 'data[i].classimg''}
-            Txt={data[i].bname}
-            classid={classid}
-            navigator={this.props.navigator}
-            onPress={this.go.bind(this,classid,data[i].bname)}
-          />
-        </View>
-      )
-    }
-    return items;
+  renderItem(rowData, sectionID, rowId) {
+    return (
+      <View key={rowId}>
+        <ImageButton
+          source={ApiConst.Versions().ImageBaseUrl + rowData.classimg}
+          Txt={rowData.bname}
+          onPress={this.go.bind(this, rowData.classid, rowData.bname)}
+        />
+      </View>
+    );
   }
-
-  goZixun(classid,title){
+  //药圈
+  goZixun(classid, title) {
     this.props.navigator.push({
       name: 'ZiXun',
       component: ZiXun,
-      params:{
+      params: {
         classid: classid,
-        title:title
+        title: title
       }
     })
   }
-
-  renderMedicineMenu(){
-    var items = [];
-    var data = this.state.medicineMenu;
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i];
-      items.push(
-        // <View key={i}>
-          <ImageButton key={i}
-            source={ApiConst.Versions().ImageBaseUrl+item.classimg}
-            Txt={data[i].bname}
-            onPress={this.goZixun.bind(this,item.classid,data[i].bname)}/>
-        // </View>
-
-      )
-    }
-    return items;
+  renderItem_(rowData, sectionID, rowId) {
+    return (
+      <View key={rowId}>
+        <ImageButton
+          source={ApiConst.Versions().ImageBaseUrl + rowData.classimg}
+          Txt={rowData.bname}
+          onPress={this.goZixun.bind(this, rowData.classid, rowData.bname)}
+        />
+      </View>
+    );
   }
 
   render() {
@@ -252,28 +267,36 @@ export default class Study extends Component {
       tintColor: titleTintColor
     };
     return (
-      <View style={{backgroundColor:'white',flex:1}}>
+      <View style={{ backgroundColor: 'white', flex: 1 }}>
         <StatusBar
           barStyle={'light-content'}
           animated={true}
-          backgroundColor={navTintColor}/>
+          backgroundColor={navTintColor} />
         <NavigationBar tintColor={navTintColor}
-                       title={titleConfig}
+          title={titleConfig}
         />
 
         <ScrollView>
-          <View style={{width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.27}}>
+          <View style={{ width: DEVICE_WIDTH, height: DEVICE_WIDTH / 2.27 }}>
             <ViewPager
-              dataSource={this.state.viewpageDataSource.cloneWithPages(this.imageArr)}
+              dataSource={this.state.viewpageDataSource}
               renderPage={(data, pageID) => this.renderPage(data, pageID)}
               isLoop={true}
-              autoPlay={true}/>
+              autoPlay={true} />
           </View>
-          <View style={{width:DEVICE_WIDTH,height:10,backgroundColor:'#efefef'}}/>
-          <Text style={{fontSize:14,color:'black',paddingVertical:10,marginLeft:10}}>快捷菜单</Text>
-          <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-            {this.renderItem()}
+          <View style={{ width: DEVICE_WIDTH, height: 10, backgroundColor: '#efefef' }} />
+          <Text style={{ fontSize: 14, color: 'black', paddingVertical: 10, marginLeft: 10 }}>快捷菜单</Text>
+          <View style={{ width: DEVICE_WIDTH, height: 1 / PixelRatio.get(), backgroundColor: '#efefef' }} />
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            <ListView
+              initialListSize={9}
+              dataSource={this.state.dataSource1}
+              renderRow={this.renderItem.bind(this)}
+              contentContainerStyle={styles.listViewStyle}
+              onEndReachedThreshold={60}
+              enableEmptySections={true}
+            />
+            {/*{this.renderItem()}*/}
             {/* <ImageButton
               source={'http://163.177.128.179:39241/5bf263751b4bcad9ece23090deeb2fee'}
               Txt="医学基础"
@@ -403,11 +426,19 @@ export default class Study extends Component {
                                         })
                                 }}/> */}
           </View>
-          <View style={{width:DEVICE_WIDTH,height:10,backgroundColor:'#efefef'}}/>
-          <Text style={{fontSize:14,color:'black',paddingVertical:10,marginLeft:10}}>药圈</Text>
-          <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-            {this.renderMedicineMenu()}
+          <View style={{ width: DEVICE_WIDTH, height: 10, backgroundColor: '#efefef' }} />
+          <Text style={{ fontSize: 14, color: 'black', paddingVertical: 10, marginLeft: 10 }}>药圈</Text>
+          <View style={{ width: DEVICE_WIDTH, height: 1 / PixelRatio.get(), backgroundColor: '#efefef' }} />
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}overflow={'hidden'}>
+            <ListView
+              initialListSize={9}
+              dataSource={this.state.dataSource2}
+              renderRow={this.renderItem_.bind(this)}
+              contentContainerStyle={styles.listViewStyle}
+              onEndReachedThreshold={60}
+              enableEmptySections={true}
+            />
+            {/*{this.renderMedicineMenu()}*/}
             {/* <ImageButton
               source={'http://163.177.128.179:39241/4b8a2a3b1ec44cc0705d445666042688'}
               Txt="资讯"
@@ -441,17 +472,24 @@ export default class Study extends Component {
                                          })
                                 }}/> */}
           </View>
-          <View style={{width:DEVICE_WIDTH,height:1/PixelRatio.get(),backgroundColor:'#efefef'}}/>
+          <View style={{ width: DEVICE_WIDTH, height: 1 / PixelRatio.get(), backgroundColor: '#efefef' }} />
           {/* 垂直轮播  */}
-          <View  overflow={ 'hidden'}>
-              {/* <CustomBulletinBoard
+          <View style={{ marginHorizontal: 10, }} overflow={'hidden'}>
+
+            {/* <CustomBulletinBoard
                   {...this.props}
                   {...this.state.infoObj}
                   style={{height:210}}
 
               /> */}
-              {this.renderInfoList()}
-
+            <ListView
+              initialListSize={9}
+              dataSource={this.state.dataSource3}
+              renderRow={this.renderItemList.bind(this)}
+              contentContainerStyle={{ flex: 1 }}
+              onEndReachedThreshold={60}
+              enableEmptySections={true}
+            />
           </View>
         </ScrollView>
       </View>
@@ -459,3 +497,16 @@ export default class Study extends Component {
   }
 
 }
+let styles = StyleSheet.create({
+  listViewStyle: {
+    // 主轴方向
+    flexDirection: 'row',
+    // 一行显示不下,换一行
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center', // 必须设置,否则换行不起作用
+    backgroundColor: 'white',
+    flex: 1,
+    width: DEVICE_WIDTH,
+  },
+});

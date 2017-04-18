@@ -25,6 +25,24 @@ let LoginModel = {
         };
         FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.UserRegister, FetchUtil.toQueryString(params), response, error);
     },
+    contrastVerity(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.ContrastVerity, FetchUtil.toQueryString(params), response, error);
+    },
+    retPassWord(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.RetPassWord, FetchUtil.toQueryString(params), response, error);
+    },
+    getUserId(pa, response, error){
+        var	params = {
+            ...pa,
+        };
+        FetchUtil.fetchPostJson(ApiConst.Versions().BaseUrl + ApiInterface.GetInfoList, FetchUtil.toQueryString(params), response, error);
+    },
     updatePsw(pa, response, error){
         var	params = {
             ...pa,
