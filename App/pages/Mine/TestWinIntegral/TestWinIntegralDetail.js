@@ -36,7 +36,7 @@ export default class SimulationTest extends Component {
             selected: '',
             status:'',
             total: 100,
-            remain:3,
+            remain:100,
             score: 0,
             disabled:false,
             time:0,
